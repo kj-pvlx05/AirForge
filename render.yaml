@@ -1,0 +1,59 @@
+# =============================================================================
+# AEROSYNC — Infrastructure as Code (Render Blueprint)
+# =============================================================================
+services:
+  # Backend API Service (FastAPI + OR-Tools + Supabase Integration)
+  - type: web
+    name: aerosync-backend
+    env: python
+    rootDir: backend
+    plan: starter
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2
+    healthCheckPath: /api/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: false
+      - key: AUTH_REQUIRED
+        value: true
+      - key: ALLOW_DEMO_RESET
+        value: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: OPERATOR_API_KEY
+        generateValue: true
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: GEMINI_TIMEOUT_SECONDS
+        value: 30
+      - key: GEMINI_MAX_OUTPUT_TOKENS
+        value: 2048
+      - key: OPTIMIZER_TIME_LIMIT_SECONDS
+        value: 5.0
+
+  # Frontend Web Dashboard (Next.js 16 App Router)
+  - type: web
+    name: aerosync-frontend
+    env: node
+    rootDir: frontend
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: aerosync-backend
+          property: host
