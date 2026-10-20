@@ -47,6 +47,15 @@ export async function fetchOptimizationRun(
 }
 
 /**
+ * Retrieves the complete OptimizationResult (allocations, metrics, recommendation) for a run.
+ */
+export async function fetchOptimizationResult(
+  runId: string
+): Promise<OptimizationResult> {
+  return apiFetch<OptimizationResult>(`/api/optimization/results/${runId}`);
+}
+
+/**
  * Retrieves a specific recommendation with its allocations and impact.
  */
 export async function fetchRecommendation(

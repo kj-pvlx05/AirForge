@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import {
   runOptimization,
+  fetchOptimizationResult,
   applyRecommendation,
   fetchOptimizationRuns,
   resetSimulation,
@@ -59,26 +60,32 @@ export default function OptimizationPage() {
 
   const reloadData = useCallback(async () => {
     try {
-      const [runs, solve, secList] = await Promise.all([
+      setLoading(true);
+      setError(null);
+      const [runs, secList] = await Promise.all([
         fetchOptimizationRuns().catch(() => []),
-        runOptimization({
-          trigger_reason: "optimization_workspace_refresh",
-          allow_rerouting: true,
-        }),
         fetchSectors().catch(() => []),
       ]);
       setRunsHistory(runs);
-      setSolveResult(solve);
       setSectors(secList);
-      setLoading(false);
-      if (solve?.run_id) {
-        getOptimizationAnalysis(solve.run_id)
-          .then((res) => setAiAnalysis(res))
-          .catch(() => {});
+
+      if (runs.length > 0) {
+        try {
+          const latestResult = await fetchOptimizationResult(runs[0].id);
+          setSolveResult(latestResult);
+          if (runs[0].id) {
+            getOptimizationAnalysis(runs[0].id)
+              .then((res) => setAiAnalysis(res))
+              .catch(() => {});
+          }
+        } catch {
+          // Non-blocking fallback
+        }
       }
+      setLoading(false);
     } catch (err: unknown) {
       console.error("Optimization workspace reload error:", err);
-      const msg = err instanceof ApiError ? err.detail : "Failed to connect to CP-SAT solver.";
+      const msg = err instanceof ApiError ? err.detail : "Failed to load optimization telemetry.";
       setError(msg);
       setLoading(false);
     }
@@ -88,31 +95,37 @@ export default function OptimizationPage() {
     let active = true;
     async function init() {
       try {
-        const [runs, solve, secList] = await Promise.all([
+        const [runs, secList] = await Promise.all([
           fetchOptimizationRuns().catch(() => []),
-          runOptimization({
-            trigger_reason: "optimization_workspace_initial_load",
-            allow_rerouting: true,
-          }),
           fetchSectors().catch(() => []),
         ]);
         if (active) {
           setRunsHistory(runs);
-          setSolveResult(solve);
           setSectors(secList);
-          setLoading(false);
-          if (solve?.run_id) {
-            getOptimizationAnalysis(solve.run_id)
-              .then((res) => {
-                if (active) setAiAnalysis(res);
-              })
-              .catch(() => {});
+
+          if (runs.length > 0) {
+            try {
+              const latestResult = await fetchOptimizationResult(runs[0].id);
+              if (active) {
+                setSolveResult(latestResult);
+                if (runs[0].id) {
+                  getOptimizationAnalysis(runs[0].id)
+                    .then((res) => {
+                      if (active) setAiAnalysis(res);
+                    })
+                    .catch(() => {});
+                }
+              }
+            } catch {
+              // Non-blocking fallback
+            }
           }
+          setLoading(false);
         }
       } catch (err: unknown) {
         if (active) {
           console.error("Optimization workspace load error:", err);
-          const msg = err instanceof ApiError ? err.detail : "Failed to connect to CP-SAT solver.";
+          const msg = err instanceof ApiError ? err.detail : "Failed to load optimization telemetry.";
           setError(msg);
           setLoading(false);
         }

@@ -41,6 +41,18 @@ export async function getStoredSession(): Promise<AuthSession | null> {
 
   const raw = localStorage.getItem(STORAGE_SESSION_KEY);
   if (!raw) {
+    const opKey = localStorage.getItem("aerosync_operator_key");
+    if (opKey) {
+      return {
+        access_token: opKey,
+        user: {
+          id: "api_key_operator",
+          email: "operator@aerosync.mil",
+          role: "operator",
+          appRole: "operator",
+        },
+      };
+    }
     return null;
   }
 
@@ -68,6 +80,30 @@ export async function getStoredSession(): Promise<AuthSession | null> {
     clearSession();
     return null;
   }
+}
+
+/**
+ * Authenticates using an Operator API key.
+ */
+export function signInWithOperatorKey(key: string): { session: AuthSession | null; error: string | null } {
+  const trimmed = key.trim();
+  if (!trimmed) {
+    return { session: null, error: "Operator key cannot be empty." };
+  }
+  const session: AuthSession = {
+    access_token: trimmed,
+    user: {
+      id: "api_key_operator",
+      email: "operator@aerosync.mil",
+      role: "operator",
+      appRole: "operator",
+    },
+  };
+  if (typeof window !== "undefined") {
+    localStorage.setItem("aerosync_operator_key", trimmed);
+  }
+  saveSession(session);
+  return { session, error: null };
 }
 
 /**
@@ -215,5 +251,6 @@ export function clearSession(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_SESSION_KEY);
   localStorage.removeItem(STORAGE_TOKEN_KEY);
+  localStorage.removeItem("aerosync_operator_key");
   window.dispatchEvent(new CustomEvent("aerosync_auth_change", { detail: null }));
 }

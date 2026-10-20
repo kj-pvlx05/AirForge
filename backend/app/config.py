@@ -28,7 +28,10 @@ class Settings(BaseSettings):
         "http://localhost:3001",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
+        "https://aerosync.vercel.app",
+        "https://airforge.vercel.app",
     ]
+    cors_origin_regex: Optional[str] = r"^https://([a-zA-Z0-9_-]+\.)*vercel\.app$"
 
     # --- Supabase ---
     supabase_url: str = ""

@@ -16,6 +16,7 @@ import {
 import {
   getStoredSession,
   signInWithPassword,
+  signInWithOperatorKey,
   signOut,
   AuthSession,
 } from "@/lib/auth/supabase-auth";
@@ -25,8 +26,10 @@ const AUTHORIZED_ROLES = new Set(["operator", "admin", "commander", "dispatcher"
 export function Topbar() {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"supabase" | "key">("supabase");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [operatorKey, setOperatorKey] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,6 +52,17 @@ export function Topbar() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    if (authMode === "key") {
+      const res = signInWithOperatorKey(operatorKey);
+      setLoading(false);
+      if (res.error) {
+        setError(res.error);
+      } else {
+        setModalOpen(false);
+        setOperatorKey("");
+      }
+      return;
+    }
     const res = await signInWithPassword(email, password);
     setLoading(false);
     if (res.error) {
@@ -230,61 +244,113 @@ export function Topbar() {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSignIn} className="mt-4 space-y-4">
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Authenticate using your Supabase operator credentials to acquire a signed JWT session for
-                  privileged backend operations.
-                </p>
-
-                {error && (
-                  <div className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
-                    <ShieldAlert size={14} className="shrink-0 mt-0.5" />
-                    <span>{error}</span>
-                  </div>
-                )}
-
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-foreground">Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="operator@aerosync.mil"
-                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-foreground">Password</label>
-                  <input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••••••"
-                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-2 pt-2">
+              <div className="mt-4 space-y-4">
+                <div className="flex rounded-lg border border-border bg-background p-1 text-xs">
                   <button
                     type="button"
-                    onClick={() => setModalOpen(false)}
-                    className="px-3 py-1.5 text-xs rounded-lg border border-border text-muted-foreground hover:bg-muted"
+                    onClick={() => {
+                      setAuthMode("supabase");
+                      setError(null);
+                    }}
+                    className={`flex-1 rounded-md py-1.5 font-medium transition ${
+                      authMode === "supabase"
+                        ? "bg-card text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
                   >
-                    Cancel
+                    Supabase Auth
                   </button>
                   <button
-                    type="submit"
-                    disabled={loading}
-                    className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50"
+                    type="button"
+                    onClick={() => {
+                      setAuthMode("key");
+                      setError(null);
+                    }}
+                    className={`flex-1 rounded-md py-1.5 font-medium transition ${
+                      authMode === "key"
+                        ? "bg-card text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
                   >
-                    {loading ? <Loader2 size={13} className="animate-spin" /> : <LogIn size={13} />}
-                    Sign In
+                    Operator Key
                   </button>
                 </div>
-              </form>
+
+                <form onSubmit={handleSignIn} className="space-y-4">
+                  {error && (
+                    <div className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
+                      <ShieldAlert size={14} className="shrink-0 mt-0.5" />
+                      <span>{error}</span>
+                    </div>
+                  )}
+
+                  {authMode === "supabase" ? (
+                    <>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Authenticate using your Supabase operator credentials to acquire a signed JWT session.
+                      </p>
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-foreground">Email</label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="operator@aerosync.mil"
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-foreground">Password</label>
+                        <input
+                          type="password"
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="••••••••••••"
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Enter your configured Operational API Key (matches <code>OPERATOR_API_KEY</code> on the backend) for direct mutation authority.
+                      </p>
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-foreground">Operator Key</label>
+                        <input
+                          type="password"
+                          required
+                          value={operatorKey}
+                          onChange={(e) => setOperatorKey(e.target.value)}
+                          placeholder="op-live-sec-..."
+                          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setModalOpen(false)}
+                      className="px-3 py-1.5 text-xs rounded-lg border border-border text-muted-foreground hover:bg-muted"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50"
+                    >
+                      {loading ? <Loader2 size={13} className="animate-spin" /> : <LogIn size={13} />}
+                      Sign In
+                    </button>
+                  </div>
+                </form>
+              </div>
             )}
           </div>
         </div>

@@ -1,7 +1,19 @@
 import { getStoredSession, refreshSession, clearSession } from "@/lib/auth/supabase-auth";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export function getApiBase(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1")) {
+    return envUrl.replace(/\/$/, "");
+  }
+  // When executing in a browser on any Vercel domain, default to the live production Render backend
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host.endsWith(".vercel.app") || host === "airforge.vercel.app" || host === "aerosync.vercel.app") {
+      return "https://airforge.onrender.com";
+    }
+  }
+  return (envUrl || "http://localhost:8000").replace(/\/$/, "");
+}
 
 export class ApiError extends Error {
   status: number;
@@ -37,7 +49,7 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const { params, ...fetchOptions } = options || {};
 
-  let url = `${API_BASE}${endpoint}`;
+  let url = `${getApiBase()}${endpoint}`;
   if (params) {
     const searchParams = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {

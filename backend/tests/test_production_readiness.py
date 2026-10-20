@@ -75,6 +75,7 @@ def test_cors_origin_parsing():
 
     s2 = Settings(cors_origins='["https://aerosync.vercel.app","http://localhost:3000"]')
     assert s2.cors_origins == ["https://aerosync.vercel.app", "http://localhost:3000"]
+    assert s1.cors_origin_regex is not None
 
 
 def test_health_and_readiness_endpoints(client):
