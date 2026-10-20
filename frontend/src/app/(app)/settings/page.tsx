@@ -258,7 +258,7 @@ export default function SettingsPage() {
       {/* ── DEMO MODE & REVIEWER PROFILES ── */}
       <SectionCard
         title="Demo Mode & Reviewer Personas"
-        subtitle="Choose a fictional operator profile to evaluate AEROSYNC with isolated synthetic state"
+        subtitle="Choose a fictional operator profile to evaluate AirOps with isolated synthetic state"
         icon={Sparkles}
         badge={
           <div className="flex items-center gap-2">
@@ -286,7 +286,7 @@ export default function SettingsPage() {
       >
         <div className="space-y-4">
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Reviewers can evaluate AEROSYNC using one of four fictional operational identities. In Demo Mode,
+            Reviewers can evaluate AirOps using one of four fictional operational identities. In Demo Mode,
             all views reflect a complete, coherent synthetic dataset. Operational actions (simulation triggers,
             CP-SAT optimization, and fleet reallocations) update local isolated state only, and never mutate
             Supabase production tables or bypass backend authorization.
@@ -551,7 +551,7 @@ export default function SettingsPage() {
       >
         <div className="space-y-0">
           <DetailRow icon={Monitor} label="Theme" value="Calm Intelligence (Tailored Light/Dark tokens)" />
-          <DetailRow icon={Palette} label="Accent Palette" value="AEROSYNC Purple (#8B7CF6)" />
+          <DetailRow icon={Palette} label="Accent Palette" value="AirOps Violet (#5B42F3 / #8B7CF6)" />
           <DetailRow icon={Clock} label="System Time Zone" value={Intl.DateTimeFormat().resolvedOptions().timeZone} />
         </div>
       </SectionCard>
@@ -563,7 +563,7 @@ export default function SettingsPage() {
         icon={Monitor}
       >
         <div className="space-y-0">
-          <DetailRow icon={CheckCircle2} label="Application" value="AEROSYNC — Dynamic Air Operations" />
+          <DetailRow icon={CheckCircle2} label="Application" value="AirOps — Dynamic Air Operations" />
           <DetailRow icon={Server} label="Frontend" value="Next.js 16 App Router (Vercel)" />
           <DetailRow icon={Server} label="Backend" value="FastAPI + OR-Tools CP-SAT (Render)" />
           <DetailRow icon={Database} label="Persistence" value="Supabase PostgreSQL + RLS" />

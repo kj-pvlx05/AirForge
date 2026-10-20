@@ -1,4 +1,4 @@
-# AEROSYNC — Intelligence for Dynamic Air Operations
+# AirOps — Intelligence for Dynamic Air Operations
 
 [![Production Deployment](https://img.shields.io/badge/Deployment-Live%20on%20Vercel-success?style=flat&logo=vercel)](https://airops-systems.vercel.app)
 [![Backend Engine](https://img.shields.io/badge/Backend-FastAPI%20%2B%20Render-blue?style=flat&logo=fastapi)](https://airforge.onrender.com/docs)
@@ -6,7 +6,7 @@
 [![Optimization](https://img.shields.io/badge/Solver-OR--Tools%20CP--SAT-violet?style=flat&logo=google)](https://developers.google.com/optimization)
 [![AI Explanations](https://img.shields.io/badge/AI%20Layer-Gemini%20Flash-orange?style=flat&logo=google-gemini)](https://ai.google.dev/)
 
-**AEROSYNC** is a high-reliability, decision-support platform designed to unify fragmented aviation operational data into a real-time Common Operating Picture (COP) and dynamically re-optimize fleet allocations when disruptions occur.
+**AirOps** is a high-reliability, decision-support platform designed to unify fragmented aviation operational data into a real-time Common Operating Picture (COP) and dynamically re-optimize fleet allocations when disruptions occur.
 
 Built specifically for high-tempo, non-combat aviation operations:
 - **Disaster Relief & Humanitarian Airdrops**
@@ -30,14 +30,14 @@ Built specifically for high-tempo, non-combat aviation operations:
 
 ```text
 ┌────────────────────────────────────────────────────────┐
-│             AEROSYNC Frontend (Next.js 16)             │
+│               AirOps Frontend (Next.js 16)             │
 │        Light/Dark Calm Intelligence UI / MapLibre      │
 │          Deployed on Vercel / Global Edge CDN          │
 └───────────────────────────┬────────────────────────────┘
                             │ Same-Origin Rewrites (/api/*)
                             ▼
 ┌────────────────────────────────────────────────────────┐
-│             AEROSYNC Backend (FastAPI / Py)            │
+│               AirOps Backend (FastAPI / Py)            │
 │  - Operator Auth Middleware (Bearer / X-API-Key)       │
 │  - LifeCycle Startup Checks (/api/health, /api/ready)  │
 │  - Non-root Container on Render                        │
@@ -89,7 +89,7 @@ Built specifically for high-tempo, non-combat aviation operations:
 - Includes a fully deterministic local fallback engine in the event of upstream AI rate limits.
 
 ### 5. Reviewer Demo Mode & Operational Personas
-For rapid evaluation without live credentials, AEROSYNC features an isolated client-side Demo Mode backed by `localStorage` (zero mutation of production Supabase data) with four fictional reviewer identities:
+For rapid evaluation without live credentials, AirOps features an isolated client-side Demo Mode backed by `localStorage` (zero mutation of production Supabase data) with four fictional reviewer identities:
 - **Col. Marcus Vance** — Operations Commander (`VANGUARD-01`)
 - **Maj. Elena Rostova** — Fleet Readiness Officer (`IRONCLAD-04`)
 - **Capt. Liam Chen** — Chief Flight Dispatcher (`SKYWATCH-09`)
@@ -117,7 +117,7 @@ The frontend includes 9 dedicated operational views within a unified command she
 
 ## Design System: Calm Intelligence
 
-AEROSYNC adheres to a **Calm Intelligence** design standard engineered for high-stress operational environments:
+AirOps adheres to a **Calm Intelligence** design standard engineered for high-stress operational environments:
 - **Palette**: Clean slate background (`#FAFAFC` / dark counterpart), pristine surface cards, subtle borders (`#EAE7F2`).
 - **Accent Purple (`#8B7CF6`)**: Reserved strictly for intelligence insights, active solver recommendations, and tactical selections.
 - **Semantic Color Coding**: Emerald (`#16A34A`) for mission-ready/nominal, Amber (`#D97706`) for advisory/maintenance, Rose (`#DC2626`) for critical/grounded.

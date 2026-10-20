@@ -40,7 +40,7 @@ export const DEMO_PROFILES: DemoProfile[] = [
     callSign: "IRONCLAD-04",
     title: "Fleet Readiness Officer",
     unit: "4th Maintenance & Logistics Wing",
-    clearance: "SECRET // REL TO AEROSYNC",
+    clearance: "SECRET // REL TO AIROPS",
     role: "fleet_manager",
     appRole: "operator",
     avatar: "ER",

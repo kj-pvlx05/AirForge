@@ -15,10 +15,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AEROSYNC — Intelligence for Dynamic Air Operations",
+  title: "AirOps — Intelligence for Dynamic Air Operations",
   description:
     "Decision-support system for dynamic aviation resource allocation. Combines real-time operational data with constraint-based optimization and AI-powered analysis.",
   keywords: [
+    "AirOps",
     "aviation",
     "operations",
     "optimization",

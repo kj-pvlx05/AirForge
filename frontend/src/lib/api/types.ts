@@ -1,5 +1,5 @@
 /**
- * AEROSYNC — Frontend TypeScript Domain Types.
+ * AirOps — Frontend TypeScript Domain Types.
  * Matches backend FastAPI Pydantic models exactly.
  */
 

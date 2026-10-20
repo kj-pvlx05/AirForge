@@ -424,7 +424,7 @@ export function Topbar() {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          placeholder="operator@aerosync.mil"
+                          placeholder="operator@airops.org"
                           className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
                         />
                       </div>

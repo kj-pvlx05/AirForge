@@ -5,10 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   AEROSYNC — Design Tokens
+   AirOps — Design Tokens
    
    Philosophy: Calm Intelligence
-   Light theme only. Purple accent at ~5-10%.
+   Light & Dark theme. Violet accent at ~5-10%.
    ============================================================ */
 
 @theme inline {
@@ -57,7 +57,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* --- AEROSYNC custom palette --- */
+  /* --- AirOps custom palette --- */
   --color-aero-bg: #FAFAFC;
   --color-aero-surface: #FFFFFF;
   --color-aero-primary: #8B7CF6;
@@ -146,7 +146,7 @@
 }
 
 /* ============================================================
-   AEROSYNC — Utility Classes (Clean Tailwind v4 syntax)
+   AirOps — Utility Classes (Clean Tailwind v4 syntax)
    ============================================================ */
 
 .aero-card {

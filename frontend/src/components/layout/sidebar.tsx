@@ -15,6 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/constants";
+import { AirOpsBrand } from "@/components/ui/airops-brand";
 
 /* Map icon string names to Lucide components */
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -37,7 +38,7 @@ export function Sidebar() {
       {/* ── Brand ── */}
       <div className="flex h-[56px] items-center gap-3 border-b border-border px-6">
         {/* Minimal abstract mark */}
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary">
           <svg
             width="18"
             height="18"
@@ -46,30 +47,23 @@ export function Sidebar() {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
-            {/* Abstract sync / aviation mark — two arcs */}
+            {/* Abstract aviation flight path */}
             <path
               d="M9 2C5.134 2 2 5.134 2 9"
-              stroke="white"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
             />
             <path
               d="M9 16C12.866 16 16 12.866 16 9"
-              stroke="white"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
             />
-            <circle cx="9" cy="9" r="2" fill="white" />
+            <circle cx="9" cy="9" r="2" fill="currentColor" />
           </svg>
         </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold tracking-tight text-foreground">
-            AEROSYNC
-          </span>
-          <span className="text-[10px] font-medium tracking-wide text-muted-foreground">
-            AIR OPERATIONS
-          </span>
-        </div>
+        <AirOpsBrand size="md" withSubtitle={true} />
       </div>
 
       {/* ── Navigation ── */}
@@ -117,7 +111,7 @@ export function Sidebar() {
       {/* ── Footer ── */}
       <div className="border-t border-border px-4 py-3">
         <p className="text-[11px] text-muted-foreground">
-          Prototype v0.1 · Synthetic Data Only
+          AirOps v0.1 · Synthetic Data Only
         </p>
       </div>
     </aside>
