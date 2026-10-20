@@ -60,3 +60,6 @@ Thumbs.db
 
 # Turbopack
 .turbo
+
+# Supabase CLI
+supabase/.temp/

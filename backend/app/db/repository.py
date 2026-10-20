@@ -69,26 +69,32 @@ class OperationalRepository:
     # -------------------------------------------------------------------------
     def get_airports(self) -> list[Airport]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("airports").select("*").order("code").execute()
-                    if res.data:
+                    if res.data is not None:
                         return [Airport(**row) for row in res.data]
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_airports")
+        if settings.is_production:
+            self._forbid_production_fallback("get_airports")
         return self.local_store.get_airports()
 
     def get_airport_by_id(self, airport_id: UUID) -> Optional[Airport]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("airports").select("*").eq("id", str(airport_id)).execute()
                     if res.data:
                         return Airport(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_airport_by_id")
+        if settings.is_production:
+            self._forbid_production_fallback("get_airport_by_id")
         return self.local_store.get_airport(airport_id)
 
     # -------------------------------------------------------------------------
@@ -96,26 +102,32 @@ class OperationalRepository:
     # -------------------------------------------------------------------------
     def get_sectors(self) -> list[Sector]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("sectors").select("*").order("code").execute()
-                    if res.data:
+                    if res.data is not None:
                         return [Sector(**row) for row in res.data]
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_sectors")
+        if settings.is_production:
+            self._forbid_production_fallback("get_sectors")
         return self.local_store.get_sectors()
 
     def get_sector_by_id(self, sector_id: UUID) -> Optional[Sector]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("sectors").select("*").eq("id", str(sector_id)).execute()
                     if res.data:
                         return Sector(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_sector_by_id")
+        if settings.is_production:
+            self._forbid_production_fallback("get_sector_by_id")
         return self.local_store.get_sector(sector_id)
 
     # -------------------------------------------------------------------------
@@ -128,7 +140,7 @@ class OperationalRepository:
         base_airport_id: Optional[UUID] = None,
     ) -> list[Aircraft]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     query = client.table("aircraft").select("*")
@@ -154,14 +166,18 @@ class OperationalRepository:
 
     def get_aircraft_by_id(self, aircraft_id: UUID) -> Optional[Aircraft]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("aircraft").select("*").eq("id", str(aircraft_id)).execute()
                     if res.data:
                         return Aircraft(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_aircraft_by_id")
+        if settings.is_production:
+            self._forbid_production_fallback("get_aircraft_by_id")
         return self.local_store.get_aircraft_by_id(aircraft_id)
 
     # -------------------------------------------------------------------------
@@ -174,7 +190,7 @@ class OperationalRepository:
         base_airport_id: Optional[UUID] = None,
     ) -> list[Crew]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     query = client.table("crew").select("*")
@@ -197,14 +213,18 @@ class OperationalRepository:
 
     def get_crew_by_id(self, crew_id: UUID) -> Optional[Crew]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("crew").select("*").eq("id", str(crew_id)).execute()
                     if res.data:
                         return Crew(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_crew_by_id")
+        if settings.is_production:
+            self._forbid_production_fallback("get_crew_by_id")
         return self.local_store.get_crew_by_id(crew_id)
 
     # -------------------------------------------------------------------------
@@ -217,7 +237,7 @@ class OperationalRepository:
         mission_type: Optional[str] = None,
     ) -> list[Mission]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     query = client.table("missions").select("*")
@@ -240,14 +260,18 @@ class OperationalRepository:
 
     def get_mission_by_id(self, mission_id: UUID) -> Optional[Mission]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("missions").select("*").eq("id", str(mission_id)).execute()
                     if res.data:
                         return Mission(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_mission_by_id")
+        if settings.is_production:
+            self._forbid_production_fallback("get_mission_by_id")
         return self.local_store.get_mission_by_id(mission_id)
 
     # -------------------------------------------------------------------------
@@ -259,7 +283,7 @@ class OperationalRepository:
         airport_id: Optional[UUID] = None,
     ) -> list[WeatherCondition]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     query = client.table("weather_conditions").select("*")
@@ -286,7 +310,7 @@ class OperationalRepository:
         status: Optional[str] = None,
     ) -> list[AirspaceRestriction]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     query = client.table("airspace_restrictions").select("*")
@@ -317,7 +341,7 @@ class OperationalRepository:
         event_type: Optional[str] = None,
     ) -> list[Event]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     query = client.table("events").select("*")
@@ -483,26 +507,32 @@ class OperationalRepository:
 
     def get_simulation_event(self, event_id: UUID) -> Optional[SimulationEvent]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("simulation_events").select("*").eq("id", str(event_id)).execute()
                     if res.data:
                         return SimulationEvent(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_simulation_event")
+        if settings.is_production:
+            self._forbid_production_fallback("get_simulation_event")
         return self.local_store.get_simulation_event(event_id)
 
     def list_simulation_events(self) -> list[SimulationEvent]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("simulation_events").select("*").order("triggered_at", desc=True).execute()
-                    if res.data:
+                    if res.data is not None:
                         return [SimulationEvent(**row) for row in res.data]
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "list_simulation_events")
+        if settings.is_production:
+            self._forbid_production_fallback("list_simulation_events")
         return self.local_store.list_simulation_events()
 
     def reset_state(self):
@@ -528,26 +558,32 @@ class OperationalRepository:
 
     def get_optimization_run(self, run_id: UUID) -> Optional[OptimizationRun]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("optimization_runs").select("*").eq("id", str(run_id)).execute()
                     if res.data:
                         return OptimizationRun(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
                     self._handle_db_error(exc, "get_optimization_run")
+        if settings.is_production:
+            self._forbid_production_fallback("get_optimization_run")
         return self.local_store.get_optimization_run(run_id)
 
     def list_optimization_runs(self) -> list[OptimizationRun]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("optimization_runs").select("*").order("created_at", desc=True).execute()
-                    if res.data:
+                    if res.data is not None:
                         return [OptimizationRun(**row) for row in res.data]
                 except Exception as exc:
                     self._handle_db_error(exc, "list_optimization_runs")
+        if settings.is_production:
+            self._forbid_production_fallback("list_optimization_runs")
         return self.local_store.list_optimization_runs()
 
     def save_optimization_result(self, result: OptimizationResult) -> OptimizationResult:
@@ -603,21 +639,25 @@ class OperationalRepository:
 
     def get_recommendation(self, rec_id: UUID) -> Optional[Recommendation]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("recommendations").select("*").eq("id", str(rec_id)).execute()
                     if res.data:
                         return Recommendation(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
                     self._handle_db_error(exc, "get_recommendation")
+        if settings.is_production:
+            self._forbid_production_fallback("get_recommendation")
         return self.local_store.get_recommendation(rec_id)
 
     def get_recommendation_by_run_id(self, run_id: UUID) -> Optional[Recommendation]:
         if not settings.is_production:
             return self.local_store.get_recommendation_by_run_id(run_id)
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("recommendations").select("*").eq("optimization_run_id", str(run_id)).limit(1).execute()
@@ -688,19 +728,23 @@ class OperationalRepository:
 
     def get_ai_analysis(self, analysis_id: UUID) -> Optional[AIAnalysisRecord]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = client.table("ai_analysis").select("*").eq("id", str(analysis_id)).execute()
                     if res.data:
                         return AIAnalysisRecord(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_ai_analysis")
+        if settings.is_production:
+            self._forbid_production_fallback("get_ai_analysis")
         return self.local_store.get_ai_analysis(analysis_id)
 
     def get_ai_analysis_by_run_id(self, run_id: UUID) -> Optional[AIAnalysisRecord]:
         if is_supabase_configured():
-            client = get_anon_client() or get_service_client()
+            client = get_service_client() or get_anon_client()
             if client:
                 try:
                     res = (
@@ -713,8 +757,12 @@ class OperationalRepository:
                     )
                     if res.data:
                         return AIAnalysisRecord(**res.data[0])
+                    if settings.is_production:
+                        return None
                 except Exception as exc:
-                    self._handle_db_error(exc, "supabase_operation")
+                    self._handle_db_error(exc, "get_ai_analysis_by_run_id")
+        if settings.is_production:
+            self._forbid_production_fallback("get_ai_analysis_by_run_id")
         return self.local_store.get_ai_analysis_by_run_id(run_id)
 
     def list_ai_analyses(self) -> list[AIAnalysisRecord]:

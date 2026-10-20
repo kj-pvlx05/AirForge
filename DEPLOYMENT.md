@@ -179,33 +179,36 @@ Execute the SQL files located in `supabase/migrations/` sequentially via the **S
 
 ```bash
 # Order of execution:
-1. supabase/migrations/20261005000000_core_aviation_schema.sql
-2. supabase/migrations/20261007000000_simulation_events_schema.sql
-3. supabase/migrations/20261007010000_optimization_runs_schema.sql
-4. supabase/migrations/20261008000000_ai_analysis_schema.sql
+1. supabase/migrations/20261005000000_initial_schema.sql
+2. supabase/migrations/20261008000000_ai_analysis_schema.sql
+3. supabase/migrations/20261010000000_harden_rls_policies.sql
 ```
 
 #### What Each Migration Creates:
-- **`20261005000000_core_aviation_schema.sql`**:  
-  Bases, Aircraft Types, Aircraft Fleet (`aircraft`), Crew Members (`crew`), Synthetic Missions (`missions`), Weather Observations (`weather`). Includes status enum validations, check constraints, foreign keys, and RLS policies.
-- **`20261007000000_simulation_events_schema.sql`**:  
-  Audit trail table `simulation_events` tracking scenario injects, affected entities, before/after states, and operator timestamps.
-- **`20261007010000_optimization_runs_schema.sql`**:  
-  `optimization_runs` and `optimization_allocations` tables storing mathematical solver metrics (runtime, solve status, score breakdown, aircraft & crew assignments).
+- **`20261005000000_initial_schema.sql`**:  
+  Declares the 13 core operational tables (`airports`, `sectors`, `aircraft`, `crew`, `missions`, `mission_crew`, `maintenance_records`, `weather_conditions`, `airspace_restrictions`, `simulation_events`, `optimization_runs`, `recommendations`, `events`), enables Row Level Security (RLS), adds foreign keys, check constraints, and performance indexes.
 - **`20261008000000_ai_analysis_schema.sql`**:  
-  `ai_analysis` table caching Gemini natural language explanations, operational situation assessments, constraint analyses, and fallback flags linked to optimization runs.
+  `ai_analysis` table caching Gemini natural language explanations, operational situation assessments, constraint analyses, and fallback flags linked to optimization runs (`optimization_run_id REFERENCES optimization_runs(id)`).
+- **`20261010000000_harden_rls_policies.sql`**:  
+  Pre-production Row Level Security hardening:
+  - Revokes `SELECT` on all 9 operational tables from `anon`.
+  - Replaces permissive policies with authenticated-only policies (`FOR SELECT TO authenticated USING (true)`).
+  - Preserves public access for 5 environmental/facility tables (`airports`, `sectors`, `weather_conditions`, `airspace_restrictions`, `events`).
+  - Revokes direct `INSERT, UPDATE, DELETE` on all tables in `public` from client roles (`anon`, `authenticated`).
+  - Grants full server-side administrative access to `service_role`.
 
-### 5.2 Seeding Synthetic Data
+### 5.2 Seeding Synthetic Data (Staging / Demo)
 
-To seed the initial 18 aircraft, 35 flight crew, active missions, and nominal weather conditions:
+To seed the initial 18 aircraft, 35 flight crew, active missions, and nominal environmental conditions:
 
 ```bash
-# Supabase CLI
+# Using Supabase CLI:
 supabase db reset
 
 # Or execute manually in Supabase SQL Editor:
-supabase/seed.sql
+# Run: supabase/seed.sql
 ```
+
 
 ---
 
@@ -294,10 +297,11 @@ Before designating a deployment as live production, verify every item in this ch
 Run the following test commands across backend and frontend before deployment:
 
 ```bash
-# 1. Backend test suite (79 tests)
+# 1. Backend test suite (85 tests)
 cd backend
 py -3.14 -m pytest
-# Expected: 79 passed
+# Expected: 85 passed
+
 
 # 2. Frontend typecheck
 cd ../frontend

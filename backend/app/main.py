@@ -89,33 +89,70 @@ async def health() -> dict[str, Any]:
     db_error: str | None = None
 
     if supabase_active:
-        client = get_anon_client() or get_service_client()
-        try:
-            if client:
-                client.table("airports").select("id").limit(1).execute()
-        except Exception as exc:
+        client = get_service_client() or get_anon_client()
+        if not client:
             db_connected = False
-            db_error = str(exc)
+            db_error = "Database client uninitialized"
+        else:
+            try:
+                client.table("airports").select("id").limit(1).execute()
+            except Exception as exc:
+                db_connected = False
+                logger.warning("Database connectivity check failed: %s", exc)
+                db_error = "Database connectivity check failed"
+
+    airports_count = 0
+    aircraft_count = 0
+    crew_count = 0
+    missions_count = 0
+    count_errors: list[str] = []
+
+    try:
+        airports_count = len(repository.get_airports())
+    except Exception as exc:
+        logger.warning("Failed to query airports count: %s", exc)
+        count_errors.append("airports")
+
+    try:
+        aircraft_count = len(repository.get_aircraft())
+    except Exception as exc:
+        logger.warning("Failed to query aircraft count: %s", exc)
+        count_errors.append("aircraft")
+
+    try:
+        crew_count = len(repository.get_crew())
+    except Exception as exc:
+        logger.warning("Failed to query crew count: %s", exc)
+        count_errors.append("crew")
+
+    try:
+        missions_count = len(repository.get_missions())
+    except Exception as exc:
+        logger.warning("Failed to query missions count: %s", exc)
+        count_errors.append("missions")
+
+    # Reconcile database connectivity status
+    if count_errors:
+        db_connected = False
+        db_error = f"Failed to query operational tables: {', '.join(count_errors)}"
+    elif supabase_active:
+        # All operational table queries succeeded without error.
+        # If the initial probe failed due to a transient connection-pool drop,
+        # reconcile status to connected: true and clear the transient error.
+        db_connected = True
+        db_error = None
 
     config_issues = settings.validate_production_configuration()
 
     # Determine overall service status
     is_degraded = False
     if settings.is_production:
-        if not supabase_active or not db_connected or config_issues:
+        if not supabase_active or not db_connected or config_issues or count_errors:
             is_degraded = True
-    elif supabase_active and not db_connected:
+    elif (supabase_active and not db_connected) or count_errors:
         is_degraded = True
 
     overall_status = "degraded" if is_degraded else "ok"
-
-    try:
-        airports_count = len(repository.get_airports())
-        aircraft_count = len(repository.get_aircraft())
-        crew_count = len(repository.get_crew())
-        missions_count = len(repository.get_missions())
-    except Exception:
-        airports_count = aircraft_count = crew_count = missions_count = 0
 
     return {
         "status": overall_status,
@@ -151,14 +188,48 @@ async def readiness_probe() -> dict[str, Any]:
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Database unconfigured in production environment.",
             )
-        client = get_anon_client() or get_service_client()
-        try:
-            if client:
-                client.table("airports").select("id").limit(1).execute()
-        except Exception as exc:
+        client = get_service_client() or get_anon_client()
+        if not client:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail=f"Database unreachable in production: {str(exc)}",
+                detail="Database unconfigured in production environment.",
             )
+
+        def _ping_db() -> None:
+            client.table("airports").select("id").limit(1).execute()
+
+        try:
+            _ping_db()
+        except Exception as exc:
+            # Check if this failure is a transient transport/connection-pool disconnect
+            is_transient = False
+            try:
+                import httpx
+                if isinstance(exc, (httpx.TransportError, ConnectionError, TimeoutError)):
+                    is_transient = True
+            except ImportError:
+                pass
+
+            if not is_transient:
+                err_msg = str(exc).lower()
+                if any(phrase in err_msg for phrase in ("disconnected", "connection reset", "broken pipe", "remoteprotocolerror", "connection refused", "timeout")):
+                    is_transient = True
+
+            if is_transient:
+                logger.warning("Readiness probe encountered transient transport error: %s; retrying once...", exc)
+                try:
+                    _ping_db()
+                except Exception as retry_exc:
+                    logger.warning("Readiness probe database check failed on retry: %s", retry_exc)
+                    raise HTTPException(
+                        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                        detail="Database unreachable in production.",
+                    )
+            else:
+                logger.warning("Readiness probe database check failed: %s", exc)
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Database unreachable in production.",
+                )
 
     return {"ready": True, "environment": settings.app_env, "service": "aerosync-api"}

@@ -66,7 +66,7 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         """Indicates whether running under strict production rules."""
-        return self.app_env.strip().lower() == "production"
+        return self.app_env.strip().lower() in ("production", "staging")
 
     @property
     def is_auth_enforced(self) -> bool:

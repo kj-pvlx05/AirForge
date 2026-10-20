@@ -28,7 +28,8 @@ def get_service_client() -> Optional[Any]:
         try:
             from supabase import create_client
             key = settings.supabase_service_role_key or settings.supabase_anon_key
-            _service_client = create_client(settings.supabase_url, key)
+            url = settings.supabase_url.rstrip("/").removesuffix("/rest/v1")
+            _service_client = create_client(url, key)
         except ImportError:
             return None
     return _service_client
@@ -44,7 +45,8 @@ def get_anon_client() -> Optional[Any]:
         try:
             from supabase import create_client
             key = settings.supabase_anon_key or settings.supabase_service_role_key
-            _anon_client = create_client(settings.supabase_url, key)
+            url = settings.supabase_url.rstrip("/").removesuffix("/rest/v1")
+            _anon_client = create_client(url, key)
         except ImportError:
             return None
     return _anon_client

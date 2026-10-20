@@ -42,6 +42,32 @@ def test_production_config_validation():
     assert prod_settings_valid.validate_production_configuration() == []
 
 
+def test_staging_config_validation():
+    """Verify configuration validator treats staging with strict persistence and security rules."""
+    staging_settings_invalid = Settings(
+        app_env="staging",
+        supabase_url="",
+        supabase_service_role_key="",
+    )
+    assert staging_settings_invalid.is_production is True
+    assert staging_settings_invalid.is_auth_enforced is True
+    issues = staging_settings_invalid.validate_production_configuration()
+    assert len(issues) >= 2
+    assert any("SUPABASE_URL" in issue for issue in issues)
+    assert any("SUPABASE_SERVICE_ROLE_KEY" in issue for issue in issues)
+
+    with pytest.raises(RuntimeError):
+        staging_settings_invalid.validate_production_configuration(raise_error=True)
+
+    staging_settings_valid = Settings(
+        app_env="staging",
+        supabase_url="https://staging-proj.supabase.co",
+        supabase_service_role_key="staging-service-role-secret-key",
+    )
+    assert staging_settings_valid.validate_production_configuration() == []
+
+
+
 def test_cors_origin_parsing():
     """Verify CORS origins field validator handles lists, comma-separated strings, and JSON strings."""
     s1 = Settings(cors_origins="https://aerosync.vercel.app,http://localhost:3000")
@@ -360,3 +386,416 @@ async def test_user_metadata_self_promotion_prevented(monkeypatch):
 
     finally:
         settings.auth_required = orig_auth
+
+
+def test_repository_service_client_precedence(monkeypatch):
+    """Verify repository operations prioritize service_role client over anon client."""
+    from unittest.mock import MagicMock
+    from app.db import repository as repo_module
+
+    fake_row = {
+        "id": "00000000-0000-0000-0000-000000000001",
+        "code": "TST1",
+        "name": "Test Airport 1",
+        "region": "TestRegion",
+        "latitude": 0.0,
+        "longitude": 0.0,
+        "elevation_ft": 100,
+        "runway_length_m": 1500,
+        "status": "operational",
+        "fuel_available": True,
+    }
+
+    service_mock = MagicMock()
+    service_table = MagicMock()
+    service_mock.table.return_value = service_table
+    service_table.select.return_value.order.return_value.execute.return_value.data = [fake_row]
+
+    anon_mock = MagicMock()
+    anon_table = MagicMock()
+    anon_mock.table.return_value = anon_table
+    anon_table.select.return_value.order.return_value.execute.return_value.data = [fake_row]
+
+    monkeypatch.setattr(repo_module, "is_supabase_configured", lambda: True)
+    monkeypatch.setattr(repo_module, "get_service_client", lambda: service_mock)
+    monkeypatch.setattr(repo_module, "get_anon_client", lambda: anon_mock)
+
+    airports = repo_module.repository.get_airports()
+    assert len(airports) == 1
+    assert airports[0].code == "TST1"
+    service_mock.table.assert_called_with("airports")
+    anon_mock.table.assert_not_called()
+
+    # Fallback to anon client when service client is None
+    service_mock.reset_mock()
+    anon_mock.reset_mock()
+    monkeypatch.setattr(repo_module, "get_service_client", lambda: None)
+
+    airports = repo_module.repository.get_airports()
+    assert len(airports) == 1
+    assert airports[0].code == "TST1"
+    anon_mock.table.assert_called_with("airports")
+
+
+def test_health_independent_count_failures(client, monkeypatch):
+    """Verify that a failure in one table query does not reset other table counts to zero,
+    and that the health status is marked degraded without leaking sensitive database errors.
+    """
+    from uuid import UUID
+    from app.db import repository as repo_module
+    from app.models import Airport
+
+    def mock_get_aircraft_fail():
+        raise RuntimeError("permission denied for table aircraft; secret_token=SUPER_SECRET_VALUE")
+
+    fake_airports = [
+        Airport(
+            id=UUID("00000000-0000-0000-0000-000000000001"),
+            code="TST1",
+            name="Test Airport 1",
+            region="TestRegion",
+            latitude=0.0,
+            longitude=0.0,
+            elevation_ft=100,
+            runway_length_m=1500,
+            status="operational",
+            fuel_available=True,
+        )
+    ]
+
+    monkeypatch.setattr(repo_module.repository, "get_airports", lambda: fake_airports)
+    monkeypatch.setattr(repo_module.repository, "get_aircraft", mock_get_aircraft_fail)
+
+    res = client.get("/api/health")
+    assert res.status_code == 200
+    data = res.json()
+
+    # Verify airports count was preserved and not wiped out to zero
+    assert data["database"]["airports_loaded"] == 1
+    # Verify aircraft count failed cleanly
+    assert data["database"]["aircraft_loaded"] == 0
+    # Verify database check does not falsely claim success
+    assert data["database"]["connected"] is False
+    assert data["status"] == "degraded"
+    assert "Failed to query operational tables: aircraft" in data["database"]["error"]
+    # Verify no secrets or sensitive exception messages are exposed
+    assert "SUPER_SECRET_VALUE" not in data["database"]["error"]
+    assert "permission denied" not in data["database"]["error"]
+
+
+def test_health_probe_fails_but_operational_queries_succeed(client, monkeypatch):
+    """Verify that when the initial probe suffers a transient error but all operational table
+    queries succeed, the health endpoint reconciles connected to True, status to 'ok',
+    and does not report a false connectivity failure.
+    """
+    import httpx
+    from uuid import UUID
+    from unittest.mock import MagicMock
+    from app.db import repository as repo_module
+    from app.models import Airport
+    import app.main as main_module
+
+    # 1. Mock initial probe client to simulate a transient socket disconnection
+    probe_client = MagicMock()
+    probe_table = MagicMock()
+    probe_client.table.return_value = probe_table
+    probe_table.select.return_value.limit.return_value.execute.side_effect = (
+        httpx.RemoteProtocolError("Server disconnected without sending a response")
+    )
+
+    monkeypatch.setattr(main_module, "get_service_client", lambda: probe_client)
+    monkeypatch.setattr(main_module, "get_anon_client", lambda: probe_client)
+
+    # 2. Mock operational repository queries to all succeed (simulating fresh connection succeeding)
+    fake_airports = [
+        Airport(
+            id=UUID("00000000-0000-0000-0000-000000000001"),
+            code="TST1",
+            name="Test Airport 1",
+            region="TestRegion",
+            latitude=0.0,
+            longitude=0.0,
+            elevation_ft=100,
+            runway_length_m=1500,
+            status="operational",
+            fuel_available=True,
+        )
+    ]
+    monkeypatch.setattr(repo_module.repository, "get_airports", lambda: fake_airports)
+    monkeypatch.setattr(repo_module.repository, "get_aircraft", lambda: [])
+    monkeypatch.setattr(repo_module.repository, "get_crew", lambda: [])
+    monkeypatch.setattr(repo_module.repository, "get_missions", lambda: [])
+
+    res = client.get("/api/health")
+    assert res.status_code == 200
+    data = res.json()
+
+    assert data["status"] == "ok"
+    assert data["database"]["connected"] is True
+    assert data["database"]["error"] is None
+    assert data["database"]["airports_loaded"] == 1
+    assert data["database"]["aircraft_loaded"] == 0
+
+
+def test_readiness_succeeds_after_transient_connection_failure(client, monkeypatch):
+    """Verify readiness probe recovers and returns 200 when encountering a transient transport disconnect."""
+    import httpx
+    from unittest.mock import MagicMock
+    import app.main as main_module
+
+    orig_env = settings.app_env
+    try:
+        settings.app_env = "staging"
+
+        mock_client = MagicMock()
+        mock_table = MagicMock()
+        mock_client.table.return_value = mock_table
+
+        # 1st call fails with RemoteProtocolError; 2nd call succeeds
+        mock_table.select.return_value.limit.return_value.execute.side_effect = [
+            httpx.RemoteProtocolError("Server disconnected without response"),
+            MagicMock(data=[{"id": "test"}]),
+        ]
+
+        monkeypatch.setattr(main_module, "is_supabase_configured", lambda: True)
+        monkeypatch.setattr(main_module, "get_service_client", lambda: mock_client)
+        monkeypatch.setattr(main_module, "get_anon_client", lambda: mock_client)
+
+        res = client.get("/api/ready")
+        assert res.status_code == 200
+        assert res.json()["ready"] is True
+        assert mock_table.select.return_value.limit.return_value.execute.call_count == 2
+    finally:
+        settings.app_env = orig_env
+
+
+def test_readiness_returns_503_when_database_unavailable(client, monkeypatch):
+    """Verify readiness probe returns HTTP 503 when the database check persistently fails in staging/production."""
+    import httpx
+    from unittest.mock import MagicMock
+    import app.main as main_module
+
+    orig_env = settings.app_env
+    try:
+        settings.app_env = "staging"
+
+        mock_client = MagicMock()
+        mock_table = MagicMock()
+        mock_client.table.return_value = mock_table
+        # Persistently fails on all attempts
+        mock_table.select.return_value.limit.return_value.execute.side_effect = (
+            httpx.ConnectError("Connection refused")
+        )
+
+        monkeypatch.setattr(main_module, "is_supabase_configured", lambda: True)
+        monkeypatch.setattr(main_module, "get_service_client", lambda: mock_client)
+        monkeypatch.setattr(main_module, "get_anon_client", lambda: mock_client)
+
+        res = client.get("/api/ready")
+        assert res.status_code == 503
+        data = res.json()
+        assert data["detail"] == "Database unreachable in production."
+    finally:
+        settings.app_env = orig_env
+
+
+def test_repository_empty_queries_return_not_found_value_without_local_store(monkeypatch):
+    """Verify that in staging/production, successful Supabase queries returning 0 rows
+    return None (for single entities) or [] (for lists) without accessing local_store."""
+    from unittest.mock import MagicMock
+    from app.db.repository import OperationalRepository, repository
+    import app.db.repository as repo_mod
+
+    orig_env = settings.app_env
+    try:
+        settings.app_env = "staging"
+
+        # Mock Supabase client returning empty data (0 rows)
+        mock_client = MagicMock()
+        mock_res = MagicMock()
+        mock_res.data = []
+
+        mock_query = MagicMock()
+        mock_query.execute.return_value = mock_res
+        mock_query.select.return_value = mock_query
+        mock_query.eq.return_value = mock_query
+        mock_query.order.return_value = mock_query
+        mock_query.limit.return_value = mock_query
+        mock_client.table.return_value = mock_query
+
+        monkeypatch.setattr(repo_mod, "is_supabase_configured", lambda: True)
+        monkeypatch.setattr(repo_mod, "get_service_client", lambda: mock_client)
+        monkeypatch.setattr(repo_mod, "get_anon_client", lambda: mock_client)
+
+        # Spy/guard on local_store property to ensure it is NEVER accessed
+        local_store_accessed = []
+        def fail_on_local_store(self):
+            local_store_accessed.append(True)
+            raise AssertionError("local_store was accessed unexpectedly!")
+
+        monkeypatch.setattr(OperationalRepository, "local_store", property(fail_on_local_store))
+
+        dummy_id = uuid4()
+
+        # Single-entity lookups must return None
+        assert repository.get_optimization_run(dummy_id) is None
+        assert repository.get_optimization_result(dummy_id) is None
+        assert repository.get_ai_analysis_by_run_id(dummy_id) is None
+        assert repository.get_ai_analysis(dummy_id) is None
+        assert repository.get_recommendation(dummy_id) is None
+        assert repository.get_recommendation_by_run_id(dummy_id) is None
+        assert repository.get_airport_by_id(dummy_id) is None
+        assert repository.get_sector_by_id(dummy_id) is None
+        assert repository.get_aircraft_by_id(dummy_id) is None
+        assert repository.get_crew_by_id(dummy_id) is None
+        assert repository.get_mission_by_id(dummy_id) is None
+        assert repository.get_simulation_event(dummy_id) is None
+
+        # List lookups must return []
+        assert repository.get_airports() == []
+        assert repository.get_sectors() == []
+        assert repository.list_simulation_events() == []
+        assert repository.list_optimization_runs() == []
+
+        assert len(local_store_accessed) == 0
+    finally:
+        settings.app_env = orig_env
+
+
+def test_repository_genuine_database_failures_raise_production_error(monkeypatch):
+    """Verify that in staging/production, database exceptions raise RuntimeError and do not fall back."""
+    import httpx
+    from unittest.mock import MagicMock
+    from app.db.repository import repository
+    import app.db.repository as repo_mod
+
+    orig_env = settings.app_env
+    try:
+        settings.app_env = "staging"
+
+        mock_client = MagicMock()
+        mock_query = MagicMock()
+        mock_query.execute.side_effect = httpx.ConnectError("Database connection timed out")
+        mock_query.select.return_value = mock_query
+        mock_query.eq.return_value = mock_query
+        mock_query.order.return_value = mock_query
+        mock_client.table.return_value = mock_query
+
+        monkeypatch.setattr(repo_mod, "is_supabase_configured", lambda: True)
+        monkeypatch.setattr(repo_mod, "get_service_client", lambda: mock_client)
+        monkeypatch.setattr(repo_mod, "get_anon_client", lambda: mock_client)
+
+        dummy_id = uuid4()
+        with pytest.raises(RuntimeError) as exc_info:
+            repository.get_optimization_run(dummy_id)
+        assert "Database operation failed in production (get_optimization_run)" in str(exc_info.value)
+
+        with pytest.raises(RuntimeError) as exc_info:
+            repository.get_airports()
+        assert "Database operation failed in production (get_airports)" in str(exc_info.value)
+    finally:
+        settings.app_env = orig_env
+
+
+def test_repository_unconfigured_supabase_fails_safely_in_production(monkeypatch):
+    """Verify that when Supabase is unconfigured in staging/production, repository lookups fail safely."""
+    from app.db.repository import repository
+    import app.db.repository as repo_mod
+
+    orig_env = settings.app_env
+    try:
+        settings.app_env = "staging"
+
+        monkeypatch.setattr(repo_mod, "is_supabase_configured", lambda: False)
+        monkeypatch.setattr(repo_mod, "get_service_client", lambda: None)
+        monkeypatch.setattr(repo_mod, "get_anon_client", lambda: None)
+
+        dummy_id = uuid4()
+        with pytest.raises(RuntimeError) as exc_info:
+            repository.get_optimization_run(dummy_id)
+        assert "Silent fallback to in-memory store is prohibited" in str(exc_info.value)
+    finally:
+        settings.app_env = orig_env
+
+
+def test_repository_development_mode_fallback_preserved(monkeypatch):
+    """Verify that development mode (is_production=False) still falls back to local_store."""
+    from app.db.repository import repository
+    import app.db.repository as repo_mod
+
+    orig_env = settings.app_env
+    try:
+        settings.app_env = "development"
+
+        monkeypatch.setattr(repo_mod, "is_supabase_configured", lambda: False)
+        airports = repository.get_airports()
+        assert len(airports) > 0  # Seeded baseline
+    finally:
+        settings.app_env = orig_env
+
+
+def test_ai_analyze_missing_run_returns_404_without_gemini_or_mutation(client, monkeypatch):
+    """Verify POST /api/ai/analyze returns 404 for nonexistent run, never calls Gemini, and never mutates data."""
+    from unittest.mock import AsyncMock, MagicMock
+    from app.auth import OperatorPrincipal, require_privileged_operator
+    from app.services.ai_explanation_service import ai_explanation_service
+    from app.db.repository import repository
+    import app.db.repository as repo_mod
+
+    orig_env = settings.app_env
+    try:
+        settings.app_env = "staging"
+
+        # Mock Supabase client returning empty data for missing run
+        mock_client = MagicMock()
+        mock_res = MagicMock()
+        mock_res.data = []
+
+        mock_query = MagicMock()
+        mock_query.execute.return_value = mock_res
+        mock_query.select.return_value = mock_query
+        mock_query.eq.return_value = mock_query
+        mock_query.order.return_value = mock_query
+        mock_client.table.return_value = mock_query
+
+        monkeypatch.setattr(repo_mod, "is_supabase_configured", lambda: True)
+        monkeypatch.setattr(repo_mod, "get_service_client", lambda: mock_client)
+        monkeypatch.setattr(repo_mod, "get_anon_client", lambda: mock_client)
+
+        # Mock privileged operator dependency
+        mock_operator = OperatorPrincipal(
+            subject="test-operator",
+            role="operator",
+            authenticated=True,
+            auth_method="supabase_jwt",
+        )
+        app.dependency_overrides[require_privileged_operator] = lambda: mock_operator
+
+        # Spy on Gemini API caller and save_ai_analysis to ensure they are NEVER called
+        gemini_mock = AsyncMock()
+        monkeypatch.setattr(ai_explanation_service, "_call_gemini_api", gemini_mock)
+
+        save_analysis_mock = MagicMock()
+        monkeypatch.setattr(repository, "save_ai_analysis", save_analysis_mock)
+
+        missing_uuid = str(uuid4())
+        response = client.post(
+            "/api/ai/analyze",
+            json={"optimization_run_id": missing_uuid},
+        )
+
+        assert response.status_code == 404
+        data = response.json()
+        assert data["detail"]["error"] == "OPTIMIZATION_RUN_NOT_FOUND"
+
+        # Verify no Gemini call was made
+        assert gemini_mock.call_count == 0
+
+        # Verify no AI analysis was saved
+        assert save_analysis_mock.call_count == 0
+
+    finally:
+        settings.app_env = orig_env
+        app.dependency_overrides.pop(require_privileged_operator, None)
+
+
