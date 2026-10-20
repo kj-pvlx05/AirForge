@@ -12,6 +12,9 @@ import {
   X,
   Loader2,
   Lock,
+  ChevronDown,
+  Sparkles,
+  UserCheck,
 } from "lucide-react";
 import {
   getStoredSession,
@@ -20,11 +23,21 @@ import {
   signOut,
   AuthSession,
 } from "@/lib/auth/supabase-auth";
+import {
+  isDemoModeActive,
+  setDemoMode,
+  getActiveDemoProfile,
+  setActiveDemoProfile,
+} from "@/lib/demo/store";
+import { DEMO_PROFILES, DemoProfile } from "@/lib/demo/profiles";
 
 const AUTHORIZED_ROLES = new Set(["operator", "admin", "commander", "dispatcher"]);
 
 export function Topbar() {
   const [session, setSession] = useState<AuthSession | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
+  const [demoProfile, setDemoProfileState] = useState<DemoProfile>(DEMO_PROFILES[0]);
+  const [demoMenuOpen, setDemoMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"supabase" | "key">("supabase");
   const [email, setEmail] = useState("");
@@ -35,12 +48,31 @@ export function Topbar() {
 
   useEffect(() => {
     getStoredSession().then(setSession);
-    const handler = (e: Event) => {
+    setIsDemo(isDemoModeActive());
+    setDemoProfileState(getActiveDemoProfile());
+
+    const authHandler = (e: Event) => {
       const custom = e as CustomEvent<AuthSession | null>;
       setSession(custom.detail);
     };
-    window.addEventListener("aerosync_auth_change", handler);
-    return () => window.removeEventListener("aerosync_auth_change", handler);
+    const demoHandler = (e: Event) => {
+      const custom = e as CustomEvent<{ active: boolean }>;
+      setIsDemo(custom.detail?.active ?? isDemoModeActive());
+    };
+    const profileHandler = (e: Event) => {
+      const custom = e as CustomEvent<DemoProfile>;
+      if (custom.detail) setDemoProfileState(custom.detail);
+    };
+
+    window.addEventListener("aerosync_auth_change", authHandler);
+    window.addEventListener("aerosync_demo_change", demoHandler);
+    window.addEventListener("aerosync_demo_profile_change", profileHandler);
+
+    return () => {
+      window.removeEventListener("aerosync_auth_change", authHandler);
+      window.removeEventListener("aerosync_demo_change", demoHandler);
+      window.removeEventListener("aerosync_demo_profile_change", profileHandler);
+    };
   }, []);
 
   const now = new Date();
@@ -100,12 +132,108 @@ export function Topbar() {
         </div>
 
         {/* ── Right section ── */}
-        <div className="flex items-center gap-4">
-          {/* Live status indicator */}
-          <div className="flex items-center gap-2 text-[12px] text-muted-foreground">
-            <Radio size={12} className="text-aero-success" />
-            <span className="font-medium text-aero-success">Live</span>
-          </div>
+        <div className="flex items-center gap-3">
+          {/* Live vs Demo Mode Selector */}
+          {isDemo ? (
+            <div className="relative">
+              <button
+                onClick={() => setDemoMenuOpen(!demoMenuOpen)}
+                className="flex items-center gap-2 rounded-lg border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 text-left transition hover:bg-purple-500/20 cursor-pointer"
+              >
+                <div
+                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${demoProfile.avatarColor}`}
+                >
+                  {demoProfile.avatar}
+                </div>
+                <div className="hidden sm:flex flex-col">
+                  <span className="text-[11px] font-semibold text-purple-600 dark:text-purple-300 flex items-center gap-1">
+                    DEMO: {demoProfile.name}
+                    <ChevronDown size={11} />
+                  </span>
+                  <span className="text-[9px] text-purple-500/80 font-mono">
+                    {demoProfile.title} ({demoProfile.callSign})
+                  </span>
+                </div>
+                <ChevronDown size={12} className="text-purple-500 sm:hidden" />
+              </button>
+
+              {demoMenuOpen && (
+                <div className="absolute right-0 mt-2 w-72 rounded-xl border border-border bg-card p-2 shadow-2xl z-50">
+                  <div className="px-2.5 py-1.5 border-b border-border mb-1">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                      <Sparkles size={12} className="text-purple-500" />
+                      Fictional Reviewer Profiles
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    {DEMO_PROFILES.map((p) => (
+                      <button
+                        key={p.id}
+                        onClick={() => {
+                          setActiveDemoProfile(p.id);
+                          setDemoProfileState(p);
+                          setDemoMenuOpen(false);
+                          window.location.reload();
+                        }}
+                        className={`w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition cursor-pointer ${
+                          demoProfile.id === p.id
+                            ? "bg-purple-500/15 border border-purple-500/30"
+                            : "hover:bg-muted"
+                        }`}
+                      >
+                        <div
+                          className={`flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold shrink-0 ${p.avatarColor}`}
+                        >
+                          {p.avatar}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[12px] font-medium text-foreground truncate">
+                            {p.name}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground truncate">
+                            {p.title} · {p.callSign}
+                          </p>
+                        </div>
+                        {demoProfile.id === p.id && (
+                          <UserCheck size={14} className="text-purple-500 shrink-0" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="pt-2 mt-1 border-t border-border">
+                    <button
+                      onClick={() => {
+                        setDemoMode(false);
+                        setDemoMenuOpen(false);
+                        window.location.reload();
+                      }}
+                      className="w-full flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-[11px] font-medium text-rose-500 hover:bg-rose-500/10 transition cursor-pointer"
+                    >
+                      Exit Demo Mode (Return to Live)
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                <Radio size={12} className="text-emerald-500" />
+                <span className="font-medium text-emerald-600 dark:text-emerald-400">Live</span>
+              </div>
+              <button
+                onClick={() => {
+                  setDemoMode(true);
+                  window.location.reload();
+                }}
+                className="flex items-center gap-1 rounded-md border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 text-[11px] font-medium text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition cursor-pointer"
+                title="Switch to Demo Mode (Fictional reviewer profiles)"
+              >
+                <Sparkles size={11} />
+                <span>Demo Mode</span>
+              </button>
+            </div>
+          )}
 
           {/* Date/time */}
           <div className="hidden flex-col items-end sm:flex">

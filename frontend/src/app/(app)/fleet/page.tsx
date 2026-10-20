@@ -17,6 +17,7 @@ import {
   Weight,
 } from "lucide-react";
 import { fetchAircraft, fetchAirports, Aircraft, Airport, AircraftStatus, AircraftRole, ApiError } from "@/lib/api";
+import { setDemoMode } from "@/lib/demo/store";
 
 const STATUS_CONFIG: Record<
   AircraftStatus,
@@ -132,40 +133,60 @@ export default function FleetPage() {
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             Total Airframes
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-foreground">{totalCount}</div>
-          <span className="text-[11px] text-muted-foreground">Active inventory</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-foreground">
+            {loading ? "…" : error ? "—" : totalCount}
+          </div>
+          <span className="text-[11px] text-muted-foreground">
+            {error ? "Backend offline" : "Active inventory"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
           <span className="text-[11px] font-medium uppercase tracking-wider text-emerald-400">
             Mission Ready
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-emerald-400">{availableCount}</div>
-          <span className="text-[11px] text-emerald-400/70">Immediate tasking</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-emerald-400">
+            {loading ? "…" : error ? "—" : availableCount}
+          </div>
+          <span className="text-[11px] text-emerald-400/70">
+            {error ? "Unavailable" : "Immediate tasking"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-sky-500/20 bg-sky-500/5 p-4">
           <span className="text-[11px] font-medium uppercase tracking-wider text-sky-400">
             In Mission
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-sky-400">{inMissionCount}</div>
-          <span className="text-[11px] text-sky-400/70">Airborne / En route</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-sky-400">
+            {loading ? "…" : error ? "—" : inMissionCount}
+          </div>
+          <span className="text-[11px] text-sky-400/70">
+            {error ? "Unavailable" : "Airborne / En route"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
           <span className="text-[11px] font-medium uppercase tracking-wider text-amber-400">
             Maintenance
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-amber-400">{maintenanceCount}</div>
-          <span className="text-[11px] text-amber-400/70">Inspections / Repair</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-amber-400">
+            {loading ? "…" : error ? "—" : maintenanceCount}
+          </div>
+          <span className="text-[11px] text-amber-400/70">
+            {error ? "Unavailable" : "Inspections / Repair"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-4 col-span-2 sm:col-span-1">
           <span className="text-[11px] font-medium uppercase tracking-wider text-rose-400">
             Grounded
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-rose-400">{groundedCount}</div>
-          <span className="text-[11px] text-rose-400/70">Weather / AOG hold</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-rose-400">
+            {loading ? "…" : error ? "—" : groundedCount}
+          </div>
+          <span className="text-[11px] text-rose-400/70">
+            {error ? "Unavailable" : "Weather / AOG hold"}
+          </span>
         </div>
       </div>
 
@@ -249,6 +270,31 @@ export default function FleetPage() {
               </div>
             </div>
           ))}
+        </div>
+      ) : error && aircraftList.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-xl border border-rose-500/30 bg-card p-12 text-center">
+          <AlertTriangle size={32} className="text-rose-400 mb-3" />
+          <h3 className="text-sm font-semibold text-foreground">Fleet Telemetry Unavailable</h3>
+          <p className="mt-1 text-xs text-muted-foreground max-w-sm">
+            {error}
+          </p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <button
+              onClick={loadData}
+              className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition cursor-pointer"
+            >
+              Retry Connection
+            </button>
+            <button
+              onClick={() => {
+                setDemoMode(true);
+                window.location.reload();
+              }}
+              className="rounded-lg border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 text-xs font-medium text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition cursor-pointer"
+            >
+              Switch to Demo Mode
+            </button>
+          </div>
         </div>
       ) : filteredAircraft.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card p-12 text-center">

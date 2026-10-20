@@ -28,6 +28,7 @@ import {
   MissionType,
   ApiError,
 } from "@/lib/api";
+import { setDemoMode } from "@/lib/demo/store";
 
 const PRIORITY_CONFIG: Record<
   MissionPriority,
@@ -184,40 +185,60 @@ export default function MissionsPage() {
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             Total Sorties
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-foreground">{totalCount}</div>
-          <span className="text-[11px] text-muted-foreground">Active registry</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-foreground">
+            {loading ? "…" : error ? "—" : totalCount}
+          </div>
+          <span className="text-[11px] text-muted-foreground">
+            {error ? "Backend offline" : "Active registry"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
           <span className="text-[11px] font-medium uppercase tracking-wider text-emerald-400">
             Active Airborne
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-emerald-400">{activeCount}</div>
-          <span className="text-[11px] text-emerald-400/70">En route to target</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-emerald-400">
+            {loading ? "…" : error ? "—" : activeCount}
+          </div>
+          <span className="text-[11px] text-emerald-400/70">
+            {error ? "Unavailable" : "En route to target"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-sky-500/20 bg-sky-500/5 p-4">
           <span className="text-[11px] font-medium uppercase tracking-wider text-sky-400">
             Scheduled
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-sky-400">{scheduledCount}</div>
-          <span className="text-[11px] text-sky-400/70">Awaiting departure</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-sky-400">
+            {loading ? "…" : error ? "—" : scheduledCount}
+          </div>
+          <span className="text-[11px] text-sky-400/70">
+            {error ? "Unavailable" : "Awaiting departure"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-4">
           <span className="text-[11px] font-medium uppercase tracking-wider text-rose-400">
             Critical Priority
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-rose-400">{criticalCount}</div>
-          <span className="text-[11px] text-rose-400/70">Immediate tasking</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-rose-400">
+            {loading ? "…" : error ? "—" : criticalCount}
+          </div>
+          <span className="text-[11px] text-rose-400/70">
+            {error ? "Unavailable" : "Immediate tasking"}
+          </span>
         </div>
 
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 col-span-2 sm:col-span-1">
           <span className="text-[11px] font-medium uppercase tracking-wider text-amber-400">
             High Priority
           </span>
-          <div className="mt-2 text-2xl font-bold font-mono text-amber-400">{highCount}</div>
-          <span className="text-[11px] text-amber-400/70">Elevated urgency</span>
+          <div className="mt-2 text-2xl font-bold font-mono text-amber-400">
+            {loading ? "…" : error ? "—" : highCount}
+          </div>
+          <span className="text-[11px] text-amber-400/70">
+            {error ? "Unavailable" : "Elevated urgency"}
+          </span>
         </div>
       </div>
 
@@ -311,6 +332,31 @@ export default function MissionsPage() {
               <div className="h-10 w-full rounded bg-muted" />
             </div>
           ))}
+        </div>
+      ) : error && missions.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-xl border border-rose-500/30 bg-card p-12 text-center">
+          <AlertTriangle size={32} className="text-rose-400 mb-3" />
+          <h3 className="text-sm font-semibold text-foreground">Mission Operations Unavailable</h3>
+          <p className="mt-1 text-xs text-muted-foreground max-w-sm">
+            {error}
+          </p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <button
+              onClick={loadData}
+              className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition cursor-pointer"
+            >
+              Retry Connection
+            </button>
+            <button
+              onClick={() => {
+                setDemoMode(true);
+                window.location.reload();
+              }}
+              className="rounded-lg border border-purple-500/30 bg-purple-500/10 px-3 py-1.5 text-xs font-medium text-purple-600 dark:text-purple-400 hover:bg-purple-500/20 transition cursor-pointer"
+            >
+              Switch to Demo Mode
+            </button>
+          </div>
         </div>
       ) : filteredMissions.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card p-12 text-center">

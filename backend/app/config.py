@@ -1,7 +1,7 @@
 """AEROSYNC Backend — Configuration via environment variables."""
 
 import json
-from typing import Any, Optional
+from typing import Any, Optional, Union
 from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
@@ -23,13 +23,14 @@ class Settings(BaseSettings):
     allow_demo_reset: bool = True  # Can be disabled in production
 
     # --- CORS (Frontend Origins) ---
-    cors_origins: list[str] = [
+    cors_origins: Union[list[str], str] = [
         "http://localhost:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
         "https://aerosync.vercel.app",
         "https://airforge.vercel.app",
+        "https://airops-systems.vercel.app",
     ]
     cors_origin_regex: Optional[str] = r"^https://([a-zA-Z0-9_-]+\.)*vercel\.app$"
 
@@ -50,21 +51,38 @@ class Settings(BaseSettings):
     @field_validator("cors_origins", mode="before")
     @classmethod
     def parse_cors_origins(cls, v: Any) -> list[str]:
+        defaults = [
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:3001",
+            "https://aerosync.vercel.app",
+            "https://airforge.vercel.app",
+            "https://airops-systems.vercel.app",
+        ]
+        parsed_list: list[str] = []
         if isinstance(v, list):
-            return [str(item).strip() for item in v if str(item).strip()]
-        if isinstance(v, str):
+            parsed_list = [str(item).strip() for item in v if str(item).strip()]
+        elif isinstance(v, str):
             v = v.strip()
-            if not v:
-                return []
             if v.startswith("[") and v.endswith("]"):
                 try:
-                    parsed = json.loads(v)
-                    if isinstance(parsed, list):
-                        return [str(item).strip() for item in parsed if str(item).strip()]
+                    loaded = json.loads(v)
+                    if isinstance(loaded, list):
+                        parsed_list = [str(item).strip() for item in loaded if str(item).strip()]
                 except Exception:
                     pass
-            return [origin.strip() for origin in v.split(",") if origin.strip()]
-        return []
+            if not parsed_list and v:
+                parsed_list = [origin.strip() for origin in v.split(",") if origin.strip()]
+
+        # Combine defaults and parsed, preserving order and removing duplicates
+        seen = set()
+        merged = []
+        for origin in defaults + parsed_list:
+            if origin and origin not in seen:
+                seen.add(origin)
+                merged.append(origin)
+        return merged
 
     @property
     def is_production(self) -> bool:

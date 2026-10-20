@@ -1,0 +1,1878 @@
+{
+  "airports": [
+    {
+      "code": "SYN-ALPHA",
+      "name": "Alpha Air Station",
+      "latitude": 28.6139,
+      "longitude": 77.209,
+      "elevation_ft": 710,
+      "runway_length_m": 2400,
+      "status": "operational",
+      "region": "Northern Highlands",
+      "fuel_available": true,
+      "id": "a0000000-0000-0000-0000-000000000001",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SYN-BRAVO",
+      "name": "Bravo Forward Base",
+      "latitude": 19.076,
+      "longitude": 72.8777,
+      "elevation_ft": 45,
+      "runway_length_m": 1800,
+      "status": "operational",
+      "region": "Coastal Sector B",
+      "fuel_available": true,
+      "id": "a0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SYN-CHARLIE",
+      "name": "Charlie Logistics Hub",
+      "latitude": 22.7196,
+      "longitude": 75.8577,
+      "elevation_ft": 1800,
+      "runway_length_m": 2800,
+      "status": "operational",
+      "region": "Central Corridor",
+      "fuel_available": true,
+      "id": "a0000000-0000-0000-0000-000000000003",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SYN-DELTA",
+      "name": "Delta Relief Staging Camp",
+      "latitude": 22.5726,
+      "longitude": 88.3639,
+      "elevation_ft": 30,
+      "runway_length_m": 1600,
+      "status": "operational",
+      "region": "Eastern Flood Zone",
+      "fuel_available": true,
+      "id": "a0000000-0000-0000-0000-000000000004",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SYN-ECHO",
+      "name": "Echo Mountain Outpost",
+      "latitude": 30.7333,
+      "longitude": 76.7794,
+      "elevation_ft": 2850,
+      "runway_length_m": 1200,
+      "status": "operational",
+      "region": "Western Highlands",
+      "fuel_available": true,
+      "id": "a0000000-0000-0000-0000-000000000005",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    }
+  ],
+  "sectors": [
+    {
+      "code": "SEC-A",
+      "name": "Sector A - Northern Highlands",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              76.0,
+              28.0
+            ],
+            [
+              78.5,
+              28.0
+            ],
+            [
+              78.5,
+              30.5
+            ],
+            [
+              76.0,
+              30.5
+            ],
+            [
+              76.0,
+              28.0
+            ]
+          ]
+        ]
+      },
+      "status": "active",
+      "risk_level": "low",
+      "notes": "Northern mountain approaches, generally stable weather.",
+      "id": "b0000000-0000-0000-0000-000000000001",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SEC-B",
+      "name": "Sector B - Coastal Corridor",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              71.5,
+              18.0
+            ],
+            [
+              74.5,
+              18.0
+            ],
+            [
+              74.5,
+              20.5
+            ],
+            [
+              71.5,
+              20.5
+            ],
+            [
+              71.5,
+              18.0
+            ]
+          ]
+        ]
+      },
+      "status": "active",
+      "risk_level": "medium",
+      "notes": "High maritime humidity; vulnerable to sudden tropical rain & convective squalls.",
+      "id": "b0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SEC-C",
+      "name": "Sector C - Central Transit Corridor",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              74.5,
+              21.5
+            ],
+            [
+              77.5,
+              21.5
+            ],
+            [
+              77.5,
+              24.0
+            ],
+            [
+              74.5,
+              24.0
+            ],
+            [
+              74.5,
+              21.5
+            ]
+          ]
+        ]
+      },
+      "status": "active",
+      "risk_level": "low",
+      "notes": "Main logistics arterial connector between northern and coastal staging bases.",
+      "id": "b0000000-0000-0000-0000-000000000003",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SEC-D",
+      "name": "Sector D - Eastern River Delta",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              87.0,
+              21.5
+            ],
+            [
+              89.5,
+              21.5
+            ],
+            [
+              89.5,
+              23.5
+            ],
+            [
+              87.0,
+              23.5
+            ],
+            [
+              87.0,
+              21.5
+            ]
+          ]
+        ]
+      },
+      "status": "active",
+      "risk_level": "medium",
+      "notes": "Flood-relief operational sector; multiple remote landing zones.",
+      "id": "b0000000-0000-0000-0000-000000000004",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SEC-E",
+      "name": "Sector E - Western Ridge",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              75.0,
+              29.5
+            ],
+            [
+              78.0,
+              29.5
+            ],
+            [
+              78.0,
+              31.5
+            ],
+            [
+              75.0,
+              31.5
+            ],
+            [
+              75.0,
+              29.5
+            ]
+          ]
+        ]
+      },
+      "status": "active",
+      "risk_level": "high",
+      "notes": "High-altitude ridgelines; requires specialized mountain qualification.",
+      "id": "b0000000-0000-0000-0000-000000000005",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    },
+    {
+      "code": "SEC-F",
+      "name": "Sector F - Southern Training Zone",
+      "boundary": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              76.0,
+              16.5
+            ],
+            [
+              78.5,
+              16.5
+            ],
+            [
+              78.5,
+              18.5
+            ],
+            [
+              76.0,
+              18.5
+            ],
+            [
+              76.0,
+              16.5
+            ]
+          ]
+        ]
+      },
+      "status": "active",
+      "risk_level": "low",
+      "notes": "Designated low-risk operational training and instrument practice box.",
+      "id": "b0000000-0000-0000-0000-000000000006",
+      "created_at": "2026-07-22T16:16:27.635078+00:00"
+    }
+  ],
+  "aircraft": [
+    {
+      "tail_number": "AS-LM01",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "medevac",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 95,
+      "flight_hours": 342.5,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000001",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LM02",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "search-and-rescue",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 88,
+      "flight_hours": 410.2,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LM03",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "medevac",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 92,
+      "flight_hours": 280.8,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000003",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LM04",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "disaster-relief",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 78,
+      "flight_hours": 512.0,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000004",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LM05",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "disaster-relief",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 100,
+      "flight_hours": 195.4,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000005",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LM06",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "standby",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 85,
+      "flight_hours": 320.1,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000006",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LM07",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "search-and-rescue",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "status": "available",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 90,
+      "flight_hours": 480.0,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000007",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LM08",
+      "model": "AeroLift M1",
+      "type": "Medium utility helicopter",
+      "role": "training",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "maintenance",
+      "max_range_km": 850,
+      "max_payload_kg": 2400,
+      "max_passengers": 12,
+      "cruise_speed_kmh": 260,
+      "fuel_capacity_liters": 1600,
+      "fuel_level_percent": 45,
+      "flight_hours": 620.5,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000008",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LH01",
+      "model": "AeroLift H2",
+      "type": "Heavy transport helicopter",
+      "role": "disaster-relief",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "max_range_km": 1100,
+      "max_payload_kg": 8500,
+      "max_passengers": 36,
+      "cruise_speed_kmh": 290,
+      "fuel_capacity_liters": 4200,
+      "fuel_level_percent": 95,
+      "flight_hours": 280.0,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000009",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LH02",
+      "model": "AeroLift H2",
+      "type": "Heavy transport helicopter",
+      "role": "transport",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "max_range_km": 1100,
+      "max_payload_kg": 8500,
+      "max_passengers": 36,
+      "cruise_speed_kmh": 290,
+      "fuel_capacity_liters": 4200,
+      "fuel_level_percent": 82,
+      "flight_hours": 340.5,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000010",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LH03",
+      "model": "AeroLift H2",
+      "type": "Heavy transport helicopter",
+      "role": "disaster-relief",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "max_range_km": 1100,
+      "max_payload_kg": 8500,
+      "max_passengers": 36,
+      "cruise_speed_kmh": 290,
+      "fuel_capacity_liters": 4200,
+      "fuel_level_percent": 90,
+      "flight_hours": 190.2,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000011",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LH04",
+      "model": "AeroLift H2",
+      "type": "Heavy transport helicopter",
+      "role": "transport",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "maintenance",
+      "max_range_km": 1100,
+      "max_payload_kg": 8500,
+      "max_passengers": 36,
+      "cruise_speed_kmh": 290,
+      "fuel_capacity_liters": 4200,
+      "fuel_level_percent": 30,
+      "flight_hours": 710.0,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000012",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-TT01",
+      "model": "AeroTransport T1",
+      "type": "Fixed-wing transport",
+      "role": "transport",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "max_range_km": 3600,
+      "max_payload_kg": 9200,
+      "max_passengers": 48,
+      "cruise_speed_kmh": 480,
+      "fuel_capacity_liters": 7800,
+      "fuel_level_percent": 98,
+      "flight_hours": 520.4,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000013",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-TT02",
+      "model": "AeroTransport T1",
+      "type": "Fixed-wing transport",
+      "role": "disaster-relief",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "max_range_km": 3600,
+      "max_payload_kg": 9200,
+      "max_passengers": 48,
+      "cruise_speed_kmh": 480,
+      "fuel_capacity_liters": 7800,
+      "fuel_level_percent": 90,
+      "flight_hours": 410.0,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000014",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-TT03",
+      "model": "AeroTransport T1",
+      "type": "Fixed-wing transport",
+      "role": "transport",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "max_range_km": 3600,
+      "max_payload_kg": 9200,
+      "max_passengers": 48,
+      "cruise_speed_kmh": 480,
+      "fuel_capacity_liters": 7800,
+      "fuel_level_percent": 85,
+      "flight_hours": 315.6,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000015",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-TT04",
+      "model": "AeroTransport T1",
+      "type": "Fixed-wing transport",
+      "role": "training",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "grounded",
+      "max_range_km": 3600,
+      "max_payload_kg": 9200,
+      "max_passengers": 48,
+      "cruise_speed_kmh": 480,
+      "fuel_capacity_liters": 7800,
+      "fuel_level_percent": 20,
+      "flight_hours": 890.1,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000016",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LU01",
+      "model": "AeroUtility U1",
+      "type": "Light utility helicopter",
+      "role": "search-and-rescue",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "max_range_km": 680,
+      "max_payload_kg": 1100,
+      "max_passengers": 5,
+      "cruise_speed_kmh": 240,
+      "fuel_capacity_liters": 720,
+      "fuel_level_percent": 92,
+      "flight_hours": 215.3,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000017",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LU02",
+      "model": "AeroUtility U1",
+      "type": "Light utility helicopter",
+      "role": "medevac",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "max_range_km": 680,
+      "max_payload_kg": 1100,
+      "max_passengers": 5,
+      "cruise_speed_kmh": 240,
+      "fuel_capacity_liters": 720,
+      "fuel_level_percent": 88,
+      "flight_hours": 305.8,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000018",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LU03",
+      "model": "AeroUtility U1",
+      "type": "Light utility helicopter",
+      "role": "search-and-rescue",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "max_range_km": 680,
+      "max_payload_kg": 1100,
+      "max_passengers": 5,
+      "cruise_speed_kmh": 240,
+      "fuel_capacity_liters": 720,
+      "fuel_level_percent": 95,
+      "flight_hours": 175.4,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000019",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LU04",
+      "model": "AeroUtility U1",
+      "type": "Light utility helicopter",
+      "role": "standby",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "max_range_km": 680,
+      "max_payload_kg": 1100,
+      "max_passengers": 5,
+      "cruise_speed_kmh": 240,
+      "fuel_capacity_liters": 720,
+      "fuel_level_percent": 84,
+      "flight_hours": 260.0,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000020",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LU05",
+      "model": "AeroUtility U1",
+      "type": "Light utility helicopter",
+      "role": "search-and-rescue",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "status": "available",
+      "max_range_km": 680,
+      "max_payload_kg": 1100,
+      "max_passengers": 5,
+      "cruise_speed_kmh": 240,
+      "fuel_capacity_liters": 720,
+      "fuel_level_percent": 90,
+      "flight_hours": 390.2,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000021",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "tail_number": "AS-LU06",
+      "model": "AeroUtility U1",
+      "type": "Light utility helicopter",
+      "role": "training",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "current_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "maintenance",
+      "max_range_km": 680,
+      "max_payload_kg": 1100,
+      "max_passengers": 5,
+      "cruise_speed_kmh": 240,
+      "fuel_capacity_liters": 720,
+      "fuel_level_percent": 40,
+      "flight_hours": 145.0,
+      "last_maintenance_date": "2026-10-05T16:16:27.635078+00:00",
+      "next_maintenance_due": "2026-12-04T16:16:27.635078+00:00",
+      "id": "c0000000-0000-0000-0000-000000000022",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    }
+  ],
+  "crew": [
+    {
+      "code": "CRW-P01",
+      "name": "Elena Vance",
+      "role": "pilot",
+      "rank": "Senior Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "NVG",
+        "SAR_CERT",
+        "MOUNTAIN_OPS"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000001",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P02",
+      "name": "Marcus Finch",
+      "role": "pilot",
+      "rank": "Flight Captain",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "HEAVY_LIFT",
+        "OVERWATER"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P03",
+      "name": "Devon Rhodes",
+      "role": "pilot",
+      "rank": "Senior Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "NVG",
+        "OVERWATER",
+        "MEDEVAC_OPS"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 3.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000003",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P04",
+      "name": "Ananya Sen",
+      "role": "pilot",
+      "rank": "Flight Captain",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "NVG",
+        "SAR_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 0.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000004",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P05",
+      "name": "Liam Callahan",
+      "role": "pilot",
+      "rank": "Senior Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "HEAVY_LIFT",
+        "FIXED_WING"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000005",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P06",
+      "name": "Sofia Mendez",
+      "role": "pilot",
+      "rank": "Flight Captain",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "FIXED_WING",
+        "CARGO_OPS"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000006",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P07",
+      "name": "Tariq Al-Mansoor",
+      "role": "pilot",
+      "rank": "Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "SAR_CERT",
+        "FLOOD_RELIEF"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 4.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000007",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P08",
+      "name": "Kavita Nair",
+      "role": "pilot",
+      "rank": "Senior Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "NVG",
+        "MEDEVAC_OPS"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 0.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000008",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P09",
+      "name": "Rohan Verma",
+      "role": "pilot",
+      "rank": "Senior Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "MOUNTAIN_OPS",
+        "SAR_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000009",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P10",
+      "name": "Ingrid Lindholm",
+      "role": "pilot",
+      "rank": "Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "NVG",
+        "MOUNTAIN_OPS"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000010",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P11",
+      "name": "Gabriel Osei",
+      "role": "pilot",
+      "rank": "Flight Captain",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "off-duty",
+      "qualifications": [
+        "IFR",
+        "NVG",
+        "SAR_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 11.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000011",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-P12",
+      "name": "Chloe Mercier",
+      "role": "pilot",
+      "rank": "Flight Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "medical",
+      "qualifications": [
+        "IFR",
+        "OVERWATER"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 0.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000012",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-CP01",
+      "name": "Aiden Zhao",
+      "role": "co-pilot",
+      "rank": "First Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "NVG"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000013",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-CP02",
+      "name": "Hannah Becker",
+      "role": "co-pilot",
+      "rank": "First Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "OVERWATER"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 3.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000014",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-CP03",
+      "name": "Carlos Ortiz",
+      "role": "co-pilot",
+      "rank": "First Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "FIXED_WING"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000015",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-CP04",
+      "name": "Zara Phillips",
+      "role": "co-pilot",
+      "rank": "First Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "SAR_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 4.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000016",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-CP05",
+      "name": "Vikram Sethi",
+      "role": "co-pilot",
+      "rank": "First Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "MOUNTAIN_OPS"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000017",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-CP06",
+      "name": "Lucas Dubois",
+      "role": "co-pilot",
+      "rank": "First Officer",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "qualifications": [
+        "IFR",
+        "HEAVY_LIFT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 0.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000018",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-FE01",
+      "name": "Arjun Das",
+      "role": "flight-engineer",
+      "rank": "Chief Systems Specialist",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "qualifications": [
+        "HEAVY_LIFT_TECH",
+        "TURBINE_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000019",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-FE02",
+      "name": "Nadia Kowalski",
+      "role": "flight-engineer",
+      "rank": "Systems Specialist",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "qualifications": [
+        "AVIONICS_CERT",
+        "OVERWATER_GEAR"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000020",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-FE03",
+      "name": "Kenji Sato",
+      "role": "flight-engineer",
+      "rank": "Senior Systems Specialist",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "qualifications": [
+        "FIXED_WING_TECH",
+        "CARGO_RIGGING"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000021",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-FE04",
+      "name": "Mira Al-Hashemi",
+      "role": "flight-engineer",
+      "rank": "Systems Specialist",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "qualifications": [
+        "WINCH_OPERATOR",
+        "TURBINE_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 3.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000022",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-MD01",
+      "name": "Dr. Rachel Vance",
+      "role": "flight-medic",
+      "rank": "Lead Flight Paramedic",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "qualifications": [
+        "CRITICAL_CARE",
+        "PEDIATRIC_ADV",
+        "WINCH_RESCUE"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000023",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-MD02",
+      "name": "Siddharth Roy",
+      "role": "flight-medic",
+      "rank": "Senior Paramedic",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "qualifications": [
+        "CRITICAL_CARE",
+        "OVERWATER_RESCUE"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 3.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000024",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-MD03",
+      "name": "Emily Thornton",
+      "role": "flight-medic",
+      "rank": "Flight Paramedic",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "status": "available",
+      "qualifications": [
+        "CRITICAL_CARE",
+        "TRAUMA_LIFE_SUPPORT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 0.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000025",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-MD04",
+      "name": "David Kim",
+      "role": "flight-medic",
+      "rank": "Flight Paramedic",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "status": "available",
+      "qualifications": [
+        "MOUNTAIN_MEDIC",
+        "HYPOTHERMIA_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000026",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-MD05",
+      "name": "Pooja Iyer",
+      "role": "flight-medic",
+      "rank": "Lead Flight Paramedic",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "off-duty",
+      "qualifications": [
+        "CRITICAL_CARE"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 11.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000027",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-LM01",
+      "name": "Derrick Boone",
+      "role": "loadmaster",
+      "rank": "Master Cargo Controller",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "qualifications": [
+        "HEAVY_RIGGING",
+        "AIRDROP_CERT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000028",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-LM02",
+      "name": "Fatima Zahra",
+      "role": "loadmaster",
+      "rank": "Cargo Controller",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "status": "available",
+      "qualifications": [
+        "HAZMAT_RELIEF",
+        "RAPID_OFFLOAD"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000029",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-LM03",
+      "name": "Tomas Novak",
+      "role": "loadmaster",
+      "rank": "Master Cargo Controller",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "status": "available",
+      "qualifications": [
+        "FIXED_WING_CARGO",
+        "HEAVY_RIGGING"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000030",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-OB01",
+      "name": "Maya Lin",
+      "role": "operations-observer",
+      "rank": "Mission Specialist",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "status": "available",
+      "qualifications": [
+        "SAR_GRID_MAPPING",
+        "SENSOR_OPERATOR"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 2.0,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000031",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    },
+    {
+      "code": "CRW-OB02",
+      "name": "Owen Gallagher",
+      "role": "operations-observer",
+      "rank": "Mission Specialist",
+      "base_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "status": "available",
+      "qualifications": [
+        "FLIR_OPERATOR",
+        "MOUNTAIN_LOOKOUT"
+      ],
+      "max_duty_hours": 12.0,
+      "current_duty_hours": 1.5,
+      "rest_period_hours": 10.0,
+      "id": "d0000000-0000-0000-0000-000000000032",
+      "created_at": "2026-08-21T16:16:27.635078+00:00"
+    }
+  ],
+  "missions": [
+    {
+      "code": "MSN-2026-01",
+      "title": "Emergency Pediatric Medevac - Coastal Clinic",
+      "type": "medevac",
+      "priority": "critical",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "sector_id": "b0000000-0000-0000-0000-000000000002",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000003",
+      "required_aircraft_model": "AeroLift M1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1,
+        "flight-medic": 1
+      },
+      "passenger_count": 2,
+      "cargo_weight_kg": 80.0,
+      "urgency_score": 95,
+      "scheduled_start": "2026-10-20T17:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T20:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000001",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-02",
+      "title": "High-Altitude Hiker Evacuation - Echo Ridge",
+      "type": "search-and-rescue",
+      "priority": "critical",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "sector_id": "b0000000-0000-0000-0000-000000000005",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000007",
+      "required_aircraft_model": "AeroLift M1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "flight-medic": 1,
+        "operations-observer": 1
+      },
+      "passenger_count": 3,
+      "cargo_weight_kg": 120.0,
+      "urgency_score": 92,
+      "scheduled_start": "2026-10-20T18:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T21:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-03",
+      "title": "Critical Water Purification Airlift - Delta Post",
+      "type": "disaster-relief",
+      "priority": "critical",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "sector_id": "b0000000-0000-0000-0000-000000000004",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000011",
+      "required_aircraft_model": "AeroLift H2",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1,
+        "loadmaster": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 6200.0,
+      "urgency_score": 90,
+      "scheduled_start": "2026-10-20T17:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T21:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000003",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-04",
+      "title": "Coastal Storm Surge Medical Evac Support",
+      "type": "medevac",
+      "priority": "high",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "sector_id": "b0000000-0000-0000-0000-000000000002",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000018",
+      "required_aircraft_model": "AeroUtility U1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "flight-medic": 1
+      },
+      "passenger_count": 1,
+      "cargo_weight_kg": 40.0,
+      "urgency_score": 82,
+      "scheduled_start": "2026-10-20T18:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T20:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000004",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-05",
+      "title": "Central Food Rations Bulk Distribution",
+      "type": "disaster-relief",
+      "priority": "high",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "sector_id": "b0000000-0000-0000-0000-000000000004",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000013",
+      "required_aircraft_model": "AeroTransport T1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1,
+        "loadmaster": 1
+      },
+      "passenger_count": 4,
+      "cargo_weight_kg": 8500.0,
+      "urgency_score": 78,
+      "scheduled_start": "2026-10-20T19:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T23:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000005",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-06",
+      "title": "Maritime Distress Beacon Survey",
+      "type": "search-and-rescue",
+      "priority": "high",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "sector_id": "b0000000-0000-0000-0000-000000000002",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000004",
+      "required_aircraft_model": "AeroLift M1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1,
+        "operations-observer": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 200.0,
+      "urgency_score": 85,
+      "scheduled_start": "2026-10-20T17:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T20:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000006",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-07",
+      "title": "Northern Medical Team Relocation",
+      "type": "transport",
+      "priority": "high",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "sector_id": "b0000000-0000-0000-0000-000000000001",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000001",
+      "required_aircraft_model": "AeroLift M1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "flight-medic": 1
+      },
+      "passenger_count": 8,
+      "cargo_weight_kg": 350.0,
+      "urgency_score": 75,
+      "scheduled_start": "2026-10-20T20:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T23:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000007",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-08",
+      "title": "Emergency Blanket & Tent Dispatch",
+      "type": "disaster-relief",
+      "priority": "medium",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "sector_id": "b0000000-0000-0000-0000-000000000003",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000014",
+      "required_aircraft_model": "AeroTransport T1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1,
+        "loadmaster": 1
+      },
+      "passenger_count": 2,
+      "cargo_weight_kg": 7000.0,
+      "urgency_score": 65,
+      "scheduled_start": "2026-10-20T21:16:27.635078+00:00",
+      "scheduled_end": "2026-10-21T01:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000008",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-09",
+      "title": "Power Generator Deployment - Delta Substation",
+      "type": "transport",
+      "priority": "medium",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "sector_id": "b0000000-0000-0000-0000-000000000004",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000009",
+      "required_aircraft_model": "AeroLift H2",
+      "required_crew_composition": {
+        "pilot": 1,
+        "flight-engineer": 1,
+        "loadmaster": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 7500.0,
+      "urgency_score": 60,
+      "scheduled_start": "2026-10-20T22:16:27.635078+00:00",
+      "scheduled_end": "2026-10-21T02:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000009",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-10",
+      "title": "Coastal Sector Environmental Observation",
+      "type": "search-and-rescue",
+      "priority": "medium",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000002",
+      "sector_id": "b0000000-0000-0000-0000-000000000002",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000010",
+      "required_aircraft_model": "AeroLift H2",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 300.0,
+      "urgency_score": 55,
+      "scheduled_start": "2026-10-20T20:16:27.635078+00:00",
+      "scheduled_end": "2026-10-21T00:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000010",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-11",
+      "title": "Highland Weather Station Diagnostic Team",
+      "type": "transport",
+      "priority": "medium",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "sector_id": "b0000000-0000-0000-0000-000000000005",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000021",
+      "required_aircraft_model": "AeroUtility U1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "operations-observer": 1
+      },
+      "passenger_count": 3,
+      "cargo_weight_kg": 150.0,
+      "urgency_score": 50,
+      "scheduled_start": "2026-10-20T21:16:27.635078+00:00",
+      "scheduled_end": "2026-10-21T00:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000011",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-12",
+      "title": "Relief Fuel Bladders Transfer",
+      "type": "disaster-relief",
+      "priority": "medium",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "sector_id": "b0000000-0000-0000-0000-000000000004",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000005",
+      "required_aircraft_model": "AeroLift M1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "flight-engineer": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 2100.0,
+      "urgency_score": 58,
+      "scheduled_start": "2026-10-20T19:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T22:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000012",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-13",
+      "title": "Night Vision Goggle Recertification Flight",
+      "type": "training",
+      "priority": "low",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000003",
+      "sector_id": "b0000000-0000-0000-0000-000000000006",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000022",
+      "required_aircraft_model": "AeroUtility U1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 0.0,
+      "urgency_score": 25,
+      "scheduled_start": "2026-10-21T00:16:27.635078+00:00",
+      "scheduled_end": "2026-10-21T02:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000013",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-14",
+      "title": "Northern Sector Medevac Standby Readiness",
+      "type": "standby",
+      "priority": "low",
+      "status": "active",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000001",
+      "sector_id": "b0000000-0000-0000-0000-000000000001",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000002",
+      "required_aircraft_model": "AeroLift M1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "flight-medic": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 0.0,
+      "urgency_score": 30,
+      "scheduled_start": "2026-10-20T14:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T22:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000014",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-15",
+      "title": "Delta Relief Reserve Standby",
+      "type": "standby",
+      "priority": "low",
+      "status": "active",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000004",
+      "sector_id": "b0000000-0000-0000-0000-000000000004",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000006",
+      "required_aircraft_model": "AeroLift M1",
+      "required_crew_composition": {
+        "pilot": 1,
+        "co-pilot": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 0.0,
+      "urgency_score": 30,
+      "scheduled_start": "2026-10-20T15:16:27.635078+00:00",
+      "scheduled_end": "2026-10-20T23:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000015",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    },
+    {
+      "code": "MSN-2026-16",
+      "title": "Mountain Route Instrument Check Flight",
+      "type": "training",
+      "priority": "low",
+      "status": "scheduled",
+      "origin_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "destination_airport_id": "a0000000-0000-0000-0000-000000000005",
+      "sector_id": "b0000000-0000-0000-0000-000000000005",
+      "assigned_aircraft_id": "c0000000-0000-0000-0000-000000000017",
+      "required_aircraft_model": "AeroUtility U1",
+      "required_crew_composition": {
+        "pilot": 1
+      },
+      "passenger_count": 0,
+      "cargo_weight_kg": 0.0,
+      "urgency_score": 20,
+      "scheduled_start": "2026-10-21T01:16:27.635078+00:00",
+      "scheduled_end": "2026-10-21T03:16:27.635078+00:00",
+      "actual_start": null,
+      "actual_end": null,
+      "notes": null,
+      "id": "e0000000-0000-0000-0000-000000000016",
+      "created_at": "2026-10-18T16:16:27.635078+00:00"
+    }
+  ],
+  "weather": [
+    {
+      "region": "Northern Highlands",
+      "sector_id": "b0000000-0000-0000-0000-000000000001",
+      "airport_id": "a0000000-0000-0000-0000-000000000001",
+      "condition": "clear",
+      "severity": "none",
+      "visibility_km": 10.0,
+      "wind_speed_kts": 8,
+      "wind_direction_deg": 310,
+      "ceiling_ft": 8500,
+      "temperature_c": 22.5,
+      "is_vfr": true,
+      "valid_from": "2026-10-20T15:16:27.635078+00:00",
+      "valid_until": "2026-10-21T04:16:27.635078+00:00",
+      "id": "80000000-0000-0000-0000-000000000001",
+      "created_at": "2026-10-20T15:16:27.635078+00:00"
+    },
+    {
+      "region": "Coastal Sector B",
+      "sector_id": "b0000000-0000-0000-0000-000000000002",
+      "airport_id": "a0000000-0000-0000-0000-000000000002",
+      "condition": "scattered-clouds",
+      "severity": "none",
+      "visibility_km": 8.5,
+      "wind_speed_kts": 14,
+      "wind_direction_deg": 240,
+      "ceiling_ft": 4200,
+      "temperature_c": 29.0,
+      "is_vfr": true,
+      "valid_from": "2026-10-20T15:16:27.635078+00:00",
+      "valid_until": "2026-10-21T04:16:27.635078+00:00",
+      "id": "80000000-0000-0000-0000-000000000002",
+      "created_at": "2026-10-20T15:16:27.635078+00:00"
+    },
+    {
+      "region": "Central Corridor",
+      "sector_id": "b0000000-0000-0000-0000-000000000003",
+      "airport_id": "a0000000-0000-0000-0000-000000000003",
+      "condition": "clear",
+      "severity": "none",
+      "visibility_km": 10.0,
+      "wind_speed_kts": 6,
+      "wind_direction_deg": 180,
+      "ceiling_ft": 9000,
+      "temperature_c": 27.2,
+      "is_vfr": true,
+      "valid_from": "2026-10-20T15:16:27.635078+00:00",
+      "valid_until": "2026-10-21T04:16:27.635078+00:00",
+      "id": "80000000-0000-0000-0000-000000000003",
+      "created_at": "2026-10-20T15:16:27.635078+00:00"
+    },
+    {
+      "region": "Eastern Flood Zone",
+      "sector_id": "b0000000-0000-0000-0000-000000000004",
+      "airport_id": "a0000000-0000-0000-0000-000000000004",
+      "condition": "light-rain",
+      "severity": "moderate",
+      "visibility_km": 5.2,
+      "wind_speed_kts": 18,
+      "wind_direction_deg": 120,
+      "ceiling_ft": 1800,
+      "temperature_c": 26.0,
+      "is_vfr": false,
+      "valid_from": "2026-10-20T15:16:27.635078+00:00",
+      "valid_until": "2026-10-21T04:16:27.635078+00:00",
+      "id": "80000000-0000-0000-0000-000000000004",
+      "created_at": "2026-10-20T15:16:27.635078+00:00"
+    },
+    {
+      "region": "Western Ridge",
+      "sector_id": "b0000000-0000-0000-0000-000000000005",
+      "airport_id": "a0000000-0000-0000-0000-000000000005",
+      "condition": "overcast",
+      "severity": "none",
+      "visibility_km": 7.0,
+      "wind_speed_kts": 16,
+      "wind_direction_deg": 280,
+      "ceiling_ft": 3100,
+      "temperature_c": 14.5,
+      "is_vfr": true,
+      "valid_from": "2026-10-20T15:16:27.635078+00:00",
+      "valid_until": "2026-10-21T04:16:27.635078+00:00",
+      "id": "80000000-0000-0000-0000-000000000005",
+      "created_at": "2026-10-20T15:16:27.635078+00:00"
+    },
+    {
+      "region": "Southern Training Zone",
+      "sector_id": "b0000000-0000-0000-0000-000000000006",
+      "airport_id": null,
+      "condition": "clear",
+      "severity": "none",
+      "visibility_km": 10.0,
+      "wind_speed_kts": 5,
+      "wind_direction_deg": 200,
+      "ceiling_ft": 10000,
+      "temperature_c": 30.5,
+      "is_vfr": true,
+      "valid_from": "2026-10-20T15:16:27.635078+00:00",
+      "valid_until": "2026-10-21T04:16:27.635078+00:00",
+      "id": "80000000-0000-0000-0000-000000000006",
+      "created_at": "2026-10-20T15:16:27.635078+00:00"
+    }
+  ],
+  "restrictions": [
+    {
+      "identifier": "NOTAM-SEC-D-01",
+      "name": "Delta Flood Relief Transit Corridor",
+      "type": "relief-corridor",
+      "sector_id": "b0000000-0000-0000-0000-000000000004",
+      "boundary": null,
+      "altitude_floor_ft": 500,
+      "altitude_ceiling_ft": 6000,
+      "status": "active",
+      "reason": "Dedicated low-altitude humanitarian airlift corridor for flood operations.",
+      "active_from": "2026-10-20T10:16:27.635078+00:00",
+      "active_until": "2026-10-25T16:16:27.635078+00:00",
+      "id": "90000000-0000-0000-0000-000000000001",
+      "created_at": "2026-10-20T10:16:27.635078+00:00"
+    },
+    {
+      "identifier": "NOTAM-SEC-E-02",
+      "name": "High-Altitude Pass Wind Shear Warning Zone",
+      "type": "weather-hazard",
+      "sector_id": "b0000000-0000-0000-0000-000000000005",
+      "boundary": null,
+      "altitude_floor_ft": 7000,
+      "altitude_ceiling_ft": 16000,
+      "status": "active",
+      "reason": "Severe mountain downdrafts reported near Echo Pass.",
+      "active_from": "2026-10-20T10:16:27.635078+00:00",
+      "active_until": "2026-10-25T16:16:27.635078+00:00",
+      "id": "90000000-0000-0000-0000-000000000002",
+      "created_at": "2026-10-20T10:16:27.635078+00:00"
+    },
+    {
+      "identifier": "NOTAM-SEC-F-03",
+      "name": "Aviation Cadet Low-Level Training Box",
+      "type": "civil-protection-zone",
+      "sector_id": "b0000000-0000-0000-0000-000000000006",
+      "boundary": null,
+      "altitude_floor_ft": 0,
+      "altitude_ceiling_ft": 4500,
+      "status": "active",
+      "reason": "Restricted to scheduled training operations.",
+      "active_from": "2026-10-20T10:16:27.635078+00:00",
+      "active_until": "2026-10-25T16:16:27.635078+00:00",
+      "id": "90000000-0000-0000-0000-000000000003",
+      "created_at": "2026-10-20T10:16:27.635078+00:00"
+    },
+    {
+      "identifier": "NOTAM-SEC-B-04",
+      "name": "Coastal Offshore Sea Search Grid",
+      "type": "search-grid",
+      "sector_id": "b0000000-0000-0000-0000-000000000002",
+      "boundary": null,
+      "altitude_floor_ft": 0,
+      "altitude_ceiling_ft": 3000,
+      "status": "pending",
+      "reason": "Reserved grid for marine distress beacon sweep if weather deteriorates.",
+      "active_from": "2026-10-20T10:16:27.635078+00:00",
+      "active_until": "2026-10-25T16:16:27.635078+00:00",
+      "id": "90000000-0000-0000-0000-000000000004",
+      "created_at": "2026-10-20T10:16:27.635078+00:00"
+    }
+  ]
+}

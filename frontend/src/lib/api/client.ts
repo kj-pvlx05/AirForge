@@ -1,16 +1,32 @@
 import { getStoredSession, refreshSession, clearSession } from "@/lib/auth/supabase-auth";
 
-export function getApiBase(): string {
+/**
+ * Returns the true destination URL for the deployed backend (for diagnostics/links).
+ */
+export function getBackendTargetUrl(): string {
   const envUrl = process.env.NEXT_PUBLIC_API_URL;
   if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1")) {
     return envUrl.replace(/\/$/, "");
   }
-  // When executing in a browser on any Vercel domain, default to the live production Render backend
+  return "https://airforge.onrender.com";
+}
+
+/**
+ * Returns the base URL for browser/SSR fetch requests.
+ * In the browser on any Vercel domain, returns "" (empty string) to route through
+ * the Next.js same-origin rewrite proxy defined in next.config.ts. This eliminates
+ * browser CORS preflight blocking and TLS negotiation issues.
+ */
+export function getApiBase(): string {
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
     if (host.endsWith(".vercel.app") || host === "airforge.vercel.app" || host === "aerosync.vercel.app") {
-      return "https://airforge.onrender.com";
+      return "";
     }
+  }
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1")) {
+    return envUrl.replace(/\/$/, "");
   }
   return (envUrl || "http://localhost:8000").replace(/\/$/, "");
 }

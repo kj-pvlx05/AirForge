@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { RefreshCw, AlertCircle } from "lucide-react";
+import { RefreshCw, AlertCircle, Sparkles } from "lucide-react";
+import { setDemoMode } from "@/lib/demo/store";
 import {
   fetchReadiness,
   fetchMissions,
@@ -326,18 +327,33 @@ export default function DashboardPage() {
 
       {/* Error state if backend fails */}
       {error && (
-        <div className="rounded-xl border border-aero-warning/40 bg-aero-warning/5 p-4 flex items-start gap-3">
-          <AlertCircle size={18} className="text-aero-warning shrink-0 mt-0.5" />
-          <div className="flex-1 text-xs">
-            <span className="font-semibold text-foreground">Operational Data Sync Warning</span>
-            <p className="text-muted-foreground mt-0.5">{error}</p>
+        <div className="rounded-xl border border-aero-warning/40 bg-aero-warning/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <AlertCircle size={18} className="text-aero-warning shrink-0 mt-0.5" />
+            <div className="text-xs">
+              <span className="font-semibold text-foreground">Operational Data Sync Warning</span>
+              <p className="text-muted-foreground mt-0.5">{error}</p>
+            </div>
           </div>
-          <button
-            onClick={() => loadDashboardData()}
-            className="text-xs font-medium text-primary hover:underline cursor-pointer"
-          >
-            Retry Connection
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => loadDashboardData()}
+              className="text-xs font-medium text-primary hover:underline cursor-pointer"
+            >
+              Retry Connection
+            </button>
+            <span className="text-muted-foreground text-xs">·</span>
+            <button
+              onClick={() => {
+                setDemoMode(true);
+                window.location.reload();
+              }}
+              className="inline-flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 px-2.5 py-1 rounded-md transition cursor-pointer"
+            >
+              <Sparkles size={12} />
+              Switch to Demo Mode
+            </button>
+          </div>
         </div>
       )}
 

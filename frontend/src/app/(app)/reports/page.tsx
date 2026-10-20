@@ -152,7 +152,7 @@ export default function ReportsPage() {
             <div className="relative flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-4 border-border bg-background">
               <div className="text-center">
                 <span className={`text-2xl font-bold font-mono ${statusColor}`}>
-                  {readinessScore}%
+                  {loading ? "…" : error ? "—" : `${readinessScore}%`}
                 </span>
                 <span className="block text-[9px] uppercase font-semibold text-muted-foreground">
                   Readiness
@@ -165,7 +165,7 @@ export default function ReportsPage() {
                 <span
                   className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider ${statusBg} ${statusColor}`}
                 >
-                  Status: {statusLevel}
+                  Status: {loading ? "Probing" : error ? "Disconnected" : statusLevel}
                 </span>
                 <span className="text-xs text-muted-foreground">
                   Generated: {readiness?.generated_at ? new Date(readiness.generated_at).toLocaleString() : "Live"}

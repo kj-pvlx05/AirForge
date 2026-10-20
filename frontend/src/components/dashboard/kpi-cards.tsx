@@ -9,7 +9,7 @@ interface KpiCardsProps {
 }
 
 export function KpiCards({ data, loading }: KpiCardsProps) {
-  if (loading || !data) {
+  if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
@@ -27,6 +27,37 @@ export function KpiCards({ data, loading }: KpiCardsProps) {
             </div>
           </div>
         ))}
+      </div>
+    );
+  }
+
+  if (!data) {
+    const fallbackKpis = [
+      { label: "Aircraft", icon: Plane, sub: "Fleet status unavailable" },
+      { label: "Crew", icon: Users, sub: "Crew readiness unavailable" },
+      { label: "Missions", icon: Target, sub: "Sortie status unavailable" },
+      { label: "Operational Readiness", icon: Activity, sub: "Telemetry disconnected" },
+    ];
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {fallbackKpis.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <div
+              key={kpi.label}
+              className="aero-card p-5 flex flex-col justify-between h-[116px] border-border/60 bg-muted/20"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-muted-foreground">{kpi.label}</span>
+                <Icon size={16} className="text-muted-foreground/50" />
+              </div>
+              <div>
+                <span className="text-2xl font-bold font-mono text-muted-foreground">—</span>
+                <p className="text-[11px] text-muted-foreground/70 mt-1">{kpi.sub}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   }
