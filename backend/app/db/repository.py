@@ -6,7 +6,7 @@ Development / Test fallback: In-memory `OperationalStore` (when credentials are 
 """
 
 import logging
-from typing import Optional
+from typing import Any, Optional
 from uuid import UUID
 from app.config import settings
 from app.db.store import store
